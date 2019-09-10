@@ -1,0 +1,1 @@
+This folder contains stuff -- originally made by Matt -- for getting icons to visualize in a web browser. Early features include making the icon appear/disappear, pulse (change transparency), and change (source a different icon file). 

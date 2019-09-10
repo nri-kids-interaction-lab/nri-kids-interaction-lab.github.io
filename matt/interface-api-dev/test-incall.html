@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://api.ohmnilabs.com/ohmni-api/test-incall.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script src="./test-incall_files/Ohmni-incall.js.download"></script>
+  <script>
+    var intervalGetVideo;
+
+    function sendJsonCmd(jsonData) {
+      Ohmni.sendJsonCmd(jsonData);
+    }
+
+
+    function setRedLight() {
+      Ohmni.setLightColor(360, 100, 100);
+    }
+
+    function setGreenLight() {
+      Ohmni.setLightColor(123, 100, 100);
+    }
+
+    function setBlueLight() {
+      Ohmni.setLightColor(240, 100, 100);
+    }
+
+    function move() {
+      Ohmni.move(-100, 100, 2000);
+    }
+
+    function setNeckPosition() {
+      Ohmni.setNeckPosition(650, 100);
+    }
+
+    function setNeckTorqueEnabled() {
+      Ohmni.setNeckTorqueEnabled(1);
+    }
+
+    function setNeckTorqueDisabled() {
+      Ohmni.setNeckTorqueEnabled(0);
+    }
+
+    function setURL(url) {
+      Ohmni.showPageOnBot(url)
+    }
+
+    function hidePage() {
+      Ohmni.hidePageOnBot();
+    }
+
+    function requestBotInfo() {
+      Ohmni.requestBotInfo();
+    }
+
+    function captureVideo() {
+      intervalGetVideo = setInterval(function() {
+        Ohmni.captureVideo();
+      }, 33);
+      document.getElementById('videoCall').style.display = "";
+      document.getElementById('stopCaptureVideo').style.display = "inline-block";
+      document.getElementById('startCaptureVideo').style.display = "none";
+    }
+
+    function stopCaptureVideo() {
+      clearInterval(intervalGetVideo);
+      document.getElementById('videoCall').style.display = "none";
+      document.getElementById('startCaptureVideo').style.display = "inline-block";
+      document.getElementById('stopCaptureVideo').style.display = "none";
+    }
+
+    function captureVideoCb(imageBase64) {
+       document.getElementById("videoCall").src = imageBase64;
+    }
+
+    function captureAudio() {
+      Ohmni.captureAudio();
+      document.getElementById('captureAudio').style.display = "none";
+      document.getElementById('stopCaptureAudio').style.display = "inline-block";
+      document.getElementById('audioRawData').style.display = "inline-block";
+    }
+
+    function stopCaptureAudio() {
+      Ohmni.stopCaptureAudio();
+      document.getElementById('captureAudio').style.display = "inline-block";
+      document.getElementById('stopCaptureAudio').style.display = "none";
+      document.getElementById('audioRawData').style.display = "none";
+    }
+
+    function captureAudioCb(data) {
+      document.getElementById('audioRawData').value = data;
+      console.log(data)
+    }
+
+    function showBotInfo(data) {
+      if (!data.wifi) return;
+      const wifi = data.wifi;
+      document.querySelector("#bot_info").style.display = "block";
+      document.getElementById("bot_name").innerHTML = data.name;
+      document.getElementById("bot_id").innerHTML = data.botId;
+      document.getElementById("bot_version").innerHTML = data.version;
+      document.getElementById("wifi_ssid").innerHTML = wifi.ssid;
+      document.getElementById("wifi_bssid").innerHTML = wifi.bssid;
+      document.getElementById("wifi_ip").innerHTML = intToIPV4(wifi.ip);
+      document.getElementById("wifi_frequency").innerHTML = wifi.freq + " MHz";
+      document.getElementById("wifi_rssi").innerHTML = wifi.rssi + " dBm";
+      document.getElementById("wifi_speed").innerHTML = wifi.speed + " Mbps";
+
+      const shareLinksNode = document.querySelector("#share_links");
+      // remove all element
+      while (shareLinksNode.firstChild) {
+        shareLinksNode.removeChild(shareLinksNode.firstChild);
+      }
+      const shareLinksElements = Object.keys(data.shareLinks).forEach(element => {
+        const shareLink = document.createElement("p");
+        const shareLinkNode = document.createTextNode(`Share link : app.ohmnilabs.com/share/${element}`);
+        shareLink.appendChild(shareLinkNode);
+        shareLinksNode.appendChild(shareLink);
+      });
+    }
+
+    function hideBotInfo() {
+      document.querySelector("#bot_info").style.display = "none";
+    }
+
+    const intToIPV4 = num => {
+      console.log(num);
+      const part1 = num & 255;
+      const part2 = (num >> 8) & 255;
+      const part3 = (num >> 16) & 255;
+      const part4 = (num >> 24) & 255;
+      return `${part1}.${part2}.${part3}.${part4}`;
+    };
+
+    function onLoad() {
+      hideBotInfo();
+    }
+
+    Ohmni.on('capi', function(msg) {
+      console.log(msg);
+    })
+  </script>
+</head>
+<body onload="onLoad()">
+  <div style="display: flex; flex-direction: row; justify-content: space-between">
+    <div>
+      <button type="button" id="captureAudio" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureAudio();">captureAudio</button><br>
+      <button type="button" id="stopCaptureAudio" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px;display: none;" onclick="stopCaptureAudio();">stopCaptureAudio</button><br>
+      <textarea style="padding:30px;margin:20px; margin-top: 60px;display: none;" id="audioRawData"></textarea><br>
+      <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
+      <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
+      <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="200" height="200px" id="videoCall" style="display: none;"> <br>
+      <button type="button" data-external="true" class="button" style="padding:30px;margin:20px" onclick="requestBotInfo();">Get bot info</button><br>
+      <button type="button" data-external="true" class="button" style="padding:30px;margin:20px" onclick="setBlueLight();">Set BLUE!</button><br>
+      <button type="button" data-external="true" class="button" style="padding:30px;margin:20px" onclick="move();">Move!</button><br>
+      <button type="button" data-external="true" class="button" style="padding:30px;margin:20px" onclick="setNeckPosition();">Set Neck Position!</button><br>
+      <button type="button" data-external="true" class="button" style="padding:30px;margin:20px" onclick="setNeckTorqueEnabled();">Enable Neck Torque</button><br>
+      <button type="button" data-external="true" class="button" style="padding:30px;margin:20px" onclick="setNeckTorqueDisabled();">Disable Neck Torque</button><br>
+      <button type="button" data-external="true" class="button" style="padding:30px;margin:20px" onclick="setURL(&#39;https://youtube.com&#39;);">Show youtube on bot</button><br>
+      <button type="button" data-external="true" class="button" style="padding:30px;margin:20px" onclick="hidePage();">Back to Call</button><br>
+      <button type="button" data-external="true" class="button" style="padding:30px;margin:20px; margin-bottom: 60px" onclick="setRedLight();">Set RED!</button><br>
+      <button type="button" data-external="true" class="button" style="padding:30px;margin:20px; margin-bottom: 60px" onclick="sendJsonCmd({cmd:'setSpeakerVolume',value:5});">Set Volume to 5</button><br>
+    </div>
+
+    <div id="bot_info" style="background: white; min-width: 400px; margin: 60px 20px; display: none;">
+      <button onclick="hideBotInfo()" style="background: url(../images/close.png); width: 32px; height: 32px; float: right;"></button>
+      <div>
+        <span>Name: </span>
+        <spand id="bot_name"></spand>
+      </div>
+      <div>
+        <span>Version: </span>
+        <spand id="bot_version"></spand>
+      </div>
+      <div>
+        <span>Bot id: </span>
+        <spand id="bot_id"></spand>
+      </div>
+      <div style="width: 60%;">
+        <label>Wifi info</label>
+        <table class="table--wifi-info">
+          <tbody>
+            <tr>
+              <td>SSID</td>
+              <td id="wifi_ssid"></td>
+            </tr>
+            <tr>
+              <td>BSSID</td>
+              <td id="wifi_bssid"></td>
+            </tr>
+            <tr>
+              <td>Ip Address</td>
+              <td id="wifi_ip"></td>
+            </tr>
+            <tr>
+              <td>Frequency</td>
+              <td id="wifi_frequency"></td>
+            </tr>
+            <tr>
+              <td>RSSI</td>
+              <td id="wifi_rssi"></td>
+            </tr>
+            <tr>
+              <td>Speed</td>
+              <td id="wifi_speed"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="share_links"></div>
+    </div>
+
+  </div>
+
+
+</body></html>

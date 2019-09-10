@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Meta info goes here! -->
+<head>
+	
+
+	<!-- Style goes inside Head; it contains CSS code -->
+	<style>
+		body {
+			background: url('images/shoebot-team-photo.jpg');
+			background-repeat: no-repeat;
+			background-size: 1000px;
+		}
+
+		.interface-elements {
+			opacity: 0.5;
+		}
+	</style>
+
+	<script type="text/javascript">
+
+		var lil_gray_circle;  // this is given a value when the <img> object loads
+
+		function toggle_display() {
+			if (lil_gray_circle.style.visibility === "visible") {
+				lil_gray_circle.style.visibility = "hidden";				
+			} else if (lil_gray_circle.style.visibility === "hidden") {
+				lil_gray_circle.style.visibility = "visible";
+			} else {
+				alert("Well this was unexpected.");
+			}
+		}
+
+		var is_pulsing = false;
+		var my_pulse_timer;
+		function pulse(stop_or_go) {
+			if (stop_or_go === 'go' && !is_pulsing) {  //start pulsing
+				my_pulse_timer = setInterval(update_opacity, 10);
+				is_pulsing = true;
+			} else if (stop_or_go === 'stop' && is_pulsing) {  // stop pulsing
+				clearInterval(my_pulse_timer);				
+				is_pulsing = false;
+			}
+
+		}
+
+		function update_opacity() {  // increase opacity a little bit. Wraps back to 0.0 when it hits the max (i.e., 1.0). 
+			var currentOpacity = window.getComputedStyle(lil_gray_circle).getPropertyValue("opacity");
+			currentOpacity = parseFloat(currentOpacity);  // annoyingly, it's grabbed as a string
+			var newOpacity = currentOpacity + 0.01;
+			if (newOpacity > 1.0) newOpacity = 0.0;
+			lil_gray_circle.style.opacity = newOpacity;
+			//console.log(typeof newOpacity)
+
+		}
+
+	</script>
+
+</head>
+
+<!-- Main stuff goes here! -->
+<body>
+
+	<div class="interface-elements">
+		<img src="images/gray-circle.png" id="lil-gray-circle" style="opacity:1.0; visibility:visible; width:25px; position:absolute; top:100px; left:825px" onload="lil_gray_circle=document.getElementById('lil-gray-circle')" />
+	</div>
+
+
+	<button type="button" onclick="toggle_display()">Flip dat</button>
+	<button type="button" onmouseover="pulse('go')" onmouseout="pulse('stop')">Pulse it up!</button>
+	<button type="button" onclick="lil_gray_circle.src='images/green-check.jpg'">A switcheroo</button>
+
+
+</body>
+
+</html>
+
+<!-- Goals -->
+<!-- 
++ Make icon pulse programmatically (smoothly change opacity, maybe)
+- Make icon move programmatically 
+- Change icons programmatically
+- Learn to spell "programmatically"
+ -->
