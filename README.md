@@ -1,2 +1,5 @@
 # nri-kids-interaction-lab.github.io
-- Checking if need main user to push to build
+## Todo
+- [ ] make changeable forntend
+- [ ] make github page work with face detection
+- [ ] make overlay work with face detection
