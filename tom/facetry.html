@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Display Webcam Stream</title>
+ 
+<style>
+.container {
+  margin: 0 auto;
+  position: relative;
+}
+
+.video{
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+</style>
+</head>
+ 
+<body>
+<div id="container" class="container">
+  <video class="video" onplay="onPlay(this)" id="videoElement" autoplay muted>
+  </video>
+  <canvas class="canvas" id="overlay" />
+</div>
+<div>
+  <button id="unmuteButton">Start Mic</button>
+</div>
+<script src="js/jquerymin.js"></script> 
+<script src="js/volume-meter.js"></script> 
+<script src="node_modules/face-api.js/dist/face-api.js"></script>
+
+<script>
+
+  $(document).ready(function() {
+  	volume_set = false;
+    run();
+        setGlobals();
+    // resize the canvas to fill browser window dynamically
+    window.addEventListener('resize', resizeCanvas, false);
+
+    function resizeCanvas() {
+        // canvas.width = window.innerWidth;
+        // canvas.height = window.innerHeight;
+
+        //drawStuff(); 
+    }
+    resizeCanvas();
+
+    function setGlobals(){
+        canvas = document.getElementById('overlay');
+        ctx = canvas.getContext('2d');
+    }
+    function getCenterFromWH(width,height){
+        return [(canvas.width - width)/2.0, (canvas.height- height)/2.0 - 200]
+    }
+
+    function getStrokeColor(color){
+        var frequency = .3;
+        var red = Math.floor(Math.sin(frequency*color + 0) * 127 + 128);
+        var green = Math.floor(Math.sin(frequency*color + 2) * 127 + 128);
+        var blue = Math.floor(Math.sin(frequency*color + 4) * 127 + 128);
+        return "#" + 
+            red.toString(16) + 
+            green.toString(16) + 
+            blue.toString(16);
+    }
+
+    function drawStuff() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            var center = getCenterFromWH(200,200);
+            strokeColor = getStrokeColor(100);
+           
+            drawSquare(center[0],
+                center[1],
+                200,
+                200, 
+                200,
+                strokeColor);
+            drawCancel();
+
+            rafID = window.requestAnimationFrame( drawStuff );
+    }
+
+    function drawSquare(x, y, w, h, thickness, strokeColor){
+        ctx.beginPath();
+        ctx.lineWidth=thickness;
+        ctx.strokeStyle= strokeColor;
+        ctx.rect(x,y,w,h); 
+        ctx.stroke();
+    }
+
+    function drawCancel(){
+        // how to change transparency
+        ctx.globalAlpha = 0.5
+        //ctx.drawImage(image, 10, 10);
+        ctx.globalAlpha = 1
+    }
+  });
+    
+async function run() {
+	console.log("fskjdll");
+
+  var video = document.querySelector("#videoElement");
+
+  if (navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function (stream) {
+        video.srcObject = stream;
+      })
+      .catch(function (err0r) {
+        console.log("Something went wrong with video stream!");
+      });
+  }
+  console.log("Got video stream.");
+}
+
+document.querySelector('button').addEventListener('click', function() {
+
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    
+    // grab an audio context
+    audioContext = new AudioContext();
+
+    // Attempt to get audio input
+    try {
+        // monkeypatch getUserMedia
+        navigator.getUserMedia = 
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia;
+
+        // ask for an audio input
+        navigator.getUserMedia(
+        {
+            "audio": {
+                "mandatory": {
+                    "googEchoCancellation": "false",
+                    "googAutoGainControl": "false",
+                    "googNoiseSuppression": "false",
+                    "googHighpassFilter": "false"
+                },
+                "optional": []
+            },
+        }, gotStream, didntGetStream);
+    } catch (e) {
+        alert('getUserMedia threw exception :' + e);
+    }
+});
+
+function gotStream(stream) {
+    // Create an AudioNode from the stream.
+    mediaStreamSource = audioContext.createMediaStreamSource(stream);
+    meter = createAudioMeter(audioContext);
+    mediaStreamSource.connect(meter);
+    
+    volume_set = true;
+}
+
+function didntGetStream(){
+  console.log("Didn't get audio");
+}
+
+
+
+function resize_canvas(element){
+  var w = element.videoHeight;
+  var h = element.videoWidth;
+  var cv = document.getElementById("overlay");
+  cv.width = w;
+  cv.height =h;
+}
+
+async function onPlay(potato){
+  //resize_canvas(potato);
+  const MODEL_URL= 'weights';
+
+  await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+
+  console.log("input loaded");
+  input = document.getElementById('videoElement');
+
+  displaySize = { width: input.videoWidth, height: input.videoHeight }
+  canvas = document.getElementById('overlay');
+  faceapi.matchDimensions(canvas, displaySize);
+
+  console.log("Face detection loaded, looping detection");
+
+  loopResults();
+  
+}
+
+async function loopResults(){
+  const mtcnnForwardParams = {
+    // limiting the search space to larger faces for webcam detection
+    minFaceSize: 2000
+  }
+
+  const detections = await faceapi.detectAllFaces(input);
+  const context = canvas.getContext('2d');
+
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  const resizedDetections = faceapi.resizeResults(detections, displaySize)
+  faceapi.draw.drawDetections(canvas, resizedDetections)
+
+
+  // const mtcnnResults = await faceapi.mtcnn(document.getElementById('videoElement'), mtcnnForwardParams);
+  // console.log(mtcnnResults);
+  loopResults();
+}
+
+
+
+</script>
+</body>
+</html>
