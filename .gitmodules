@@ -1,0 +1,3 @@
+[submodule "yulun/ohmni_android_comm_server"]
+	path = yulun/ohmni_android_comm_server
+	url = git@github.com:lunjohnzhang/ohmni_android_comm_server.git
