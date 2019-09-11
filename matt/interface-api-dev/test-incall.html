@@ -5,10 +5,26 @@
   <script>
     var intervalGetVideo;
 
+    // START of code for Matt's buttons
+
     function sendJsonCmd(jsonData) {
       Ohmni.sendJsonCmd(jsonData);
     }
 
+    function setBotVolume(value) {
+      // Value must be from 1 to 11.
+      Ohmni.setBotVolume(value);
+    }
+
+    function getBotVolume() {
+      Ohmni.getBotVolume();
+    }
+
+    function getBotVolumeCb(value) {
+      console.log(value);  // print out the current Bot Volume in the console
+    }
+
+    // END of code for Matt's buttons
 
     function setRedLight() {
       Ohmni.setLightColor(360, 100, 100);
@@ -157,6 +173,8 @@
       <button type="button" data-external="true" class="button" style="padding:30px;margin:20px" onclick="hidePage();">Back to Call</button><br>
       <button type="button" data-external="true" class="button" style="padding:30px;margin:20px; margin-bottom: 60px" onclick="setRedLight();">Set RED!</button><br>
       <button type="button" data-external="true" class="button" style="padding:30px;margin:20px; margin-bottom: 60px" onclick="sendJsonCmd({cmd:'setSpeakerVolume',value:5});">Set Volume to 5</button><br>
+      <button type="button" data-external="true" class="button" style="padding:30px;margin:20px; margin-bottom: 60px" onclick="getBotVolume();">Get Bot Volume (see console)</button><br>
+      <button type="button" data-external="true" class="button" style="padding:30px;margin:20px; margin-bottom: 60px" onclick="setBotVolume(7);">Set Bot Volume to 7</button><br>
     </div>
 
     <div id="bot_info" style="background: white; min-width: 400px; margin: 60px 20px; display: none;">
