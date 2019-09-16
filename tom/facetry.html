@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<script src="https://app.ohmnilabs.com/api/Ohmni-incall.js"></script>
 <head>
 <meta charset="utf-8">
 <title>Display Webcam Stream</title>
@@ -41,8 +42,30 @@
 <script src="js/volume-meter.js"></script> 
 <script src="node_modules/face-api.js/dist/face-api.js"></script>
 
-<script>
+<button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
+      <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
+      <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="200" height="200px" id="videoCall" style="display: none;"> <br>
 
+<script>
+  // ohmni code
+  function captureVideo() {
+      intervalGetVideo = setInterval(function() {
+        Ohmni.captureVideo();
+      }, 33);
+      document.getElementById('videoCall').style.display = "";
+      document.getElementById('stopCaptureVideo').style.display = "inline-block";
+      document.getElementById('startCaptureVideo').style.display = "none";
+  }
+  function stopCaptureVideo() {
+      clearInterval(intervalGetVideo);
+      document.getElementById('videoCall').style.display = "none";
+      document.getElementById('startCaptureVideo').style.display = "inline-block";
+      document.getElementById('stopCaptureVideo').style.display = "none";
+  }
+  function captureVideoCb(imageBase64) {
+       document.getElementById("videoCall").src = imageBase64;
+  }
+  // Canvas code
   $(document).ready(function() {
   	volume_set = false;
     run();
@@ -211,6 +234,7 @@ async function loopResults(){
   const context = canvas.getContext('2d');
 
   context.clearRect(0, 0, canvas.width, canvas.height);
+
   const resizedDetections = faceapi.resizeResults(detections, displaySize)
   faceapi.draw.drawDetections(canvas, resizedDetections)
 
