@@ -24,27 +24,31 @@
   top: 0;
   left: 0;
   z-index: 10;
+  pointer-events:none;
 }
 
 </style>
 </head>
  
 <body>
-<div id="container" class="container">
-  <video class="video" onplay="onPlay(this)" id="videoElement" autoplay muted>
-  </video>
-  <canvas class="canvas" id="overlay" />
-</div>
-<div>
-  <button id="unmuteButton">Start Mic</button>
-</div>
+  <div>
+    <button id="unmuteButton">Start Mic</button>
+    <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
+    <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
+    <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="200" height="200px" id="videoCall" style="display: none;"> <br>
+  </div>
+
+  <div id="container" class="container">
+    <canvas class="canvas" id="overlay" />
+  </div>
+
+
+
 <script src="js/jquerymin.js"></script> 
 <script src="js/volume-meter.js"></script> 
 <script src="node_modules/face-api.js/dist/face-api.js"></script>
 
-<button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
-      <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
-      <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="200" height="200px" id="videoCall" style="display: none;"> <br>
+
 
 <script>
   // ohmni code
@@ -133,20 +137,19 @@
   });
     
 async function run() {
-	console.log("fskjdll");
 
-  var video = document.querySelector("#videoElement");
+  var video = document.getElementById("videoCall")
 
-  if (navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(function (stream) {
-        video.srcObject = stream;
-      })
-      .catch(function (err0r) {
-        console.log("Something went wrong with video stream!");
-      });
-  }
-  console.log("Got video stream.");
+  // if (navigator.mediaDevices.getUserMedia) {
+  //   navigator.mediaDevices.getUserMedia({ video: true })
+  //     .then(function (stream) {
+  //       video.srcObject = stream;
+  //     })
+  //     .catch(function (err0r) {
+  //       console.log("Something went wrong with video stream!");
+  //     });
+  // }
+  // console.log("Got video stream.");
 }
 
 document.querySelector('button').addEventListener('click', function() {
@@ -212,7 +215,7 @@ async function onPlay(potato){
   await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
 
   console.log("input loaded");
-  input = document.getElementById('videoElement');
+  input = document.getElementById('videoCall');
 
   displaySize = { width: input.videoWidth, height: input.videoHeight }
   canvas = document.getElementById('overlay');
