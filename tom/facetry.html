@@ -33,6 +33,7 @@
 <body>
   <div>
     <button id="unmuteButton">Start Mic</button>
+    <button id="play" onclick="onPlay()">Start Mic</button>
     <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
     <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
     <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="200" height="200px" id="videoCall" style="display: none;"> <br>
@@ -138,7 +139,7 @@
     
 async function run() {
 
-  var video = document.getElementById("videoCall")
+  var video = document.getElementById("videoCall");
 
   // if (navigator.mediaDevices.getUserMedia) {
   //   navigator.mediaDevices.getUserMedia({ video: true })
