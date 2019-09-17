@@ -150,7 +150,7 @@ async function run() {
   //       console.log("Something went wrong with video stream!");
   //     });
   // }
-  // console.log("Got video stream.");
+  console.log("Got video stream.");
 }
 
 document.querySelector('button').addEventListener('click', function() {
@@ -213,9 +213,10 @@ async function onPlay(potato){
   //resize_canvas(potato);
   const MODEL_URL= 'weights';
 
+  console.log("models is loading");
   await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+  console.log("model loaded");
 
-  console.log("input loaded");
   input = document.getElementById('videoCall');
 
   displaySize = { width: input.videoWidth, height: input.videoHeight }
@@ -229,6 +230,7 @@ async function onPlay(potato){
 }
 
 async function loopResults(){
+  console.log("looping results");
   const mtcnnForwardParams = {
     // limiting the search space to larger faces for webcam detection
     minFaceSize: 2000
