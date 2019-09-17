@@ -32,7 +32,6 @@
  
 <body>
   <div>
-    <button id="unmuteButton">Start Mic</button>
     <button id="loopResults" onclick="loopResults()">Try Camera Frame</button>
     <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
     <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
@@ -43,12 +42,9 @@
     <canvas class="canvas" id="overlay" />
   </div>
 
-
-
 <script src="js/jquerymin.js"></script> 
 <script src="js/volume-meter.js"></script> 
 <script src="node_modules/face-api.js/dist/face-api.js"></script>
-
 
 
 <script>
@@ -74,209 +70,99 @@
   }
   // Canvas code
   $(document).ready(function() {
-  	volume_set = false;
-    xx = 0;
-    yy = 0;
-    ww = 0;
-    hh = 0;
+  	setGlobals();
     run();
-        setGlobals();
-    // resize the canvas to fill browser window dynamically
-    window.addEventListener('resize', resizeCanvas, false);
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        drawStuff(); 
-    }
-    resizeCanvas();
-
-    function setGlobals(){
-        canvas = document.getElementById('overlay');
-        ctx = canvas.getContext('2d');
-    }
-    function getCenterFromWH(width,height){
-        return [(canvas.width - width)/2.0, (canvas.height- height)/2.0 - 200]
-    }
-
-    function getStrokeColor(color){
-        var frequency = .3;
-        var red = Math.floor(Math.sin(frequency*color + 0) * 127 + 128);
-        var green = Math.floor(Math.sin(frequency*color + 2) * 127 + 128);
-        var blue = Math.floor(Math.sin(frequency*color + 4) * 127 + 128);
-        return "#" + 
-            red.toString(16) + 
-            green.toString(16) + 
-            blue.toString(16);
-    }
-
-    function drawStuff() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            var center = getCenterFromWH(200,200);
-            strokeColor = getStrokeColor(200);
-           
-            drawSquare(xx,yy,ww,hh,1,strokeColor);
-            drawCancel();
-
-            rafID = window.requestAnimationFrame( drawStuff );
-    }
-
-    function drawSquare(x, y, w, h, thickness, strokeColor){
-        ctx.beginPath();
-        ctx.lineWidth=thickness;
-        ctx.strokeStyle= strokeColor;
-        ctx.rect(x,y,w,h); 
-        ctx.stroke();
-    }
-
-    function drawCancel(){
-        // how to change transparency
-        ctx.globalAlpha = 0.5
-        //ctx.drawImage(image, 10, 10);
-        ctx.globalAlpha = 1
-    }
   });
     
-async function run() {
+  // resize the canvas to fill browser window dynamically
+  function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+  }
 
-  var video = document.getElementById("videoCall");
+  function setGlobals(){
+      canvas = document.getElementById('overlay');
+      ctx = canvas.getContext('2d');
+      volume_set = false;
+  }
+  async function run() {
+    var video = document.getElementById("videoCall");
+    console.log("Got video stream.");
+  }
 
-  // if (navigator.mediaDevices.getUserMedia) {
-  //   navigator.mediaDevices.getUserMedia({ video: true })
-  //     .then(function (stream) {
-  //       video.srcObject = stream;
-  //     })
-  //     .catch(function (err0r) {
-  //       console.log("Something went wrong with video stream!");
-  //     });
-  // }
-  console.log("Got video stream.");
-}
+  function getCenterFromWH(width,height){
+      return [(canvas.width - width)/2.0, (canvas.height- height)/2.0 - 200]
+  }
 
-document.querySelector('button').addEventListener('click', function() {
+  function getStrokeColor(color){
+      var frequency = .3;
+      var red = Math.floor(Math.sin(frequency*color + 0) * 127 + 128);
+      var green = Math.floor(Math.sin(frequency*color + 2) * 127 + 128);
+      var blue = Math.floor(Math.sin(frequency*color + 4) * 127 + 128);
+      return "#" + 
+          red.toString(16) + 
+          green.toString(16) + 
+          blue.toString(16);
+  }
 
-  window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    
-    // grab an audio context
-    audioContext = new AudioContext();
+  function drawSquare(x, y, w, h, thickness, strokeColor){
+      ctx.beginPath();
+      ctx.lineWidth=thickness;
+      ctx.strokeStyle= strokeColor;
+      ctx.rect(x,y,w,h); 
+      ctx.stroke();
+  }
 
-    // Attempt to get audio input
-    try {
-        // monkeypatch getUserMedia
-        navigator.getUserMedia = 
-            navigator.getUserMedia ||
-            navigator.webkitGetUserMedia ||
-            navigator.mozGetUserMedia;
+  function drawCancel(){
+      // how to change transparency
+      ctx.globalAlpha = 0.5
+      //ctx.drawImage(image, 10, 10);
+      ctx.globalAlpha = 1
+  }
 
-        // ask for an audio input
-        navigator.getUserMedia(
-        {
-            "audio": {
-                "mandatory": {
-                    "googEchoCancellation": "false",
-                    "googAutoGainControl": "false",
-                    "googNoiseSuppression": "false",
-                    "googHighpassFilter": "false"
-                },
-                "optional": []
-            },
-        }, gotStream, didntGetStream);
-    } catch (e) {
-        alert('getUserMedia threw exception :' + e);
+  async function onPlay(potato){
+    const MODEL_URL= 'weights';
+
+    console.log("model loading");
+    await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+    console.log("model loaded");
+
+    input = document.getElementById('videoCall');
+
+    displaySize = { width: input.videoWidth, height: input.videoHeight }
+    canvas = document.getElementById('overlay');
+    faceapi.matchDimensions(canvas, displaySize);
+
+    console.log("Face detection loaded, looping detection");
+    loopResultsReady = true;
+  }
+
+  async function loopResults(){
+    if(!loopResultsReady){
+      onPlay();
+      return;
     }
-});
+    console.log("looping results");
+    // still needs to be integrated
+    const mtcnnForwardParams = {
+      // limiting the search space to larger faces for webcam detection
+      minFaceSize: 20
+    }
 
-function gotStream(stream) {
-    // Create an AudioNode from the stream.
-    mediaStreamSource = audioContext.createMediaStreamSource(stream);
-    meter = createAudioMeter(audioContext);
-    mediaStreamSource.connect(meter);
-    
-    volume_set = true;
-}
-
-function didntGetStream(){
-  console.log("Didn't get audio");
-}
+    const detections = await faceapi.detectAllFaces(input);
 
 
+    if(detections.length > 0){
+      var box = detections[0]._box;
+      resizeCanvas();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawSquare(box._x,box._y,box._width,box._height);
+    }
+    else{
+      console.log("No detections found")
+    }
 
-function resize_canvas(element){
-  var w = element.videoHeight;
-  var h = element.videoWidth;
-  var cv = document.getElementById("overlay");
-  cv.width = w;
-  cv.height =h;
-}
-
-async function onPlay(potato){
-  //resize_canvas(potato);
-  const MODEL_URL= 'weights';
-
-  console.log("model loading");
-  await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
-  console.log("model loaded");
-
-  input = document.getElementById('videoCall');
-
-  displaySize = { width: input.videoWidth, height: input.videoHeight }
-  canvas = document.getElementById('overlay');
-  faceapi.matchDimensions(canvas, displaySize);
-
-  console.log("Face detection loaded, looping detection");
-  loopResultsReady = true;
-  //loopResults();
-  
-}
-
-function drawSquare(x, y, w, h, thickness, strokeColor){
-  const context = canvas.getContext('2d');
-
-  context.beginPath();
-  context.lineWidth=thickness;
-  context.strokeStyle= strokeColor;
-  context.rect(x,y,w,h); 
-  context.stroke();
-}
-
-async function loopResults(){
-  if(!loopResultsReady){
-    onPlay();
-    return;
   }
-  console.log("looping results");
-  const mtcnnForwardParams = {
-    // limiting the search space to larger faces for webcam detection
-    minFaceSize: 20
-  }
-
-  const detections = await faceapi.detectAllFaces(input);
-  const context = canvas.getContext('2d');
-
-  
-
-  //const resizedDetections = faceapi.resizeResults(detections, displaySize)
-  //faceapi.draw.drawDetections(canvas, resizedDetections)
-  if(detections.length > 0){
-    var box = detections[0]._box;
-    console.log(box);
-    xx = box._x; 
-    yy = box._y;
-    ww = box._width;
-    hh = box._height;
-  }
-  else{
-    console.log("No detections found")
-  }
-
-
-  // const mtcnnResults = await faceapi.mtcnn(document.getElementById('videoElement'), mtcnnForwardParams);
-  // console.log(mtcnnResults);
-  //loopResults();
-}
-
-
 
 </script>
 </body>
