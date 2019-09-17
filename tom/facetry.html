@@ -33,7 +33,6 @@
 <body>
   <div>
     <button id="unmuteButton">Start Mic</button>
-    <button id="play" onclick="onPlay()">Load Models</button>
     <button id="loopResults" onclick="loopResults()">Try Camera Frame</button>
     <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
     <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
@@ -76,16 +75,20 @@
   // Canvas code
   $(document).ready(function() {
   	volume_set = false;
+    xx = 0;
+    yy = 0;
+    ww = 0;
+    hh = 0;
     run();
         setGlobals();
     // resize the canvas to fill browser window dynamically
     window.addEventListener('resize', resizeCanvas, false);
 
     function resizeCanvas() {
-        // canvas.width = window.innerWidth;
-        // canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        //drawStuff(); 
+        drawStuff(); 
     }
     resizeCanvas();
 
@@ -111,14 +114,9 @@
     function drawStuff() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             var center = getCenterFromWH(200,200);
-            strokeColor = getStrokeColor(100);
+            strokeColor = getStrokeColor(200);
            
-            drawSquare(center[0],
-                center[1],
-                200,
-                200, 
-                200,
-                strokeColor);
+            drawSquare(xx,yy,ww,hh,1,strokeColor);
             drawCancel();
 
             rafID = window.requestAnimationFrame( drawStuff );
@@ -244,6 +242,7 @@ function drawSquare(x, y, w, h, thickness, strokeColor){
 
 async function loopResults(){
   if(!loopResultsReady){
+    onPlay();
     return;
   }
   console.log("looping results");
@@ -255,15 +254,17 @@ async function loopResults(){
   const detections = await faceapi.detectAllFaces(input);
   const context = canvas.getContext('2d');
 
-  context.clearRect(0, 0, canvas.width, canvas.height);
-
+  
 
   //const resizedDetections = faceapi.resizeResults(detections, displaySize)
   //faceapi.draw.drawDetections(canvas, resizedDetections)
   if(detections.length > 0){
     var box = detections[0]._box;
     console.log(box);
-    drawSquare(box._x, box._y, box._width, box._height, 1, "#FF0000");
+    xx = box._x; 
+    yy = box._y;
+    ww = box._width;
+    hh = box._height;
   }
   else{
     console.log("No detections found")
