@@ -151,12 +151,12 @@
 
     const detections = await faceapi.detectAllFaces(input);
 
-
     if(detections.length > 0){
       var box = detections[0]._box;
       resizeCanvas();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawSquare(box._x,box._y,box._width,box._height);
+      drawSquare(box._x,box._y,box._width,box._height,3, "#FF0000");
+      console.log(box);
     }
     else{
       console.log("No detections found")
