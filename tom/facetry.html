@@ -151,14 +151,24 @@
     if(detections.length > 0){
       var box = detections[0]._box;
       resizeCanvas();
+      var ad = adjustBox(box);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawSquare(box._x,box._y,box._width,box._height,3, "#FF0000");
+      drawSquare(ad[0],ad[1],ad[2],ad[3],3, "#FF0000");
       console.log(box);
     }
     else{
       console.log("No detections found")
     }
 
+  }
+
+  function adjustBox(box){
+    var xfac = box._x/300 * canvas.width;
+    var yfac = box._y/115 * canvas.height;
+    var wfac = box._width/300 * canvas.width;
+    var hfac = box._height/115 * canvas.height;
+
+    return [xfac,yfac,wfac,hfac];
   }
 
 </script>
