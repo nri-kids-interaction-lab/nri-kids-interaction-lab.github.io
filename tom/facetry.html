@@ -35,7 +35,7 @@
     <button id="loopResults" onclick="loopResults()">Try Camera Frame</button>
     <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
     <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
-    <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" hidden id="videoCall" style="display: none;"> <br>
+    <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="100%" height="100%" hidden id="videoCall" style="display: none;"> <br>
   </div>
 
   <div id="container" class="container">
@@ -71,7 +71,7 @@
   // Canvas code
   $(document).ready(function() {
   	setGlobals();
-    run();
+    // capture video start will go here
   });
     
   // resize the canvas to fill browser window dynamically
@@ -84,10 +84,6 @@
       canvas = document.getElementById('overlay');
       ctx = canvas.getContext('2d');
       volume_set = false;
-  }
-  async function run() {
-    var video = document.getElementById("videoCall");
-    console.log("Got video stream.");
   }
 
   function getCenterFromWH(width,height){
@@ -127,9 +123,10 @@
     await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
     console.log("model loaded");
 
+    resizeCanvas();
     input = document.getElementById('videoCall');
 
-    displaySize = { width: input.videoWidth, height: input.videoHeight }
+    displaySize = { width: canvas.width, height: canvas.height }
     canvas = document.getElementById('overlay');
     faceapi.matchDimensions(canvas, displaySize);
 
