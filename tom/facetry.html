@@ -232,6 +232,14 @@ async function onPlay(potato){
   
 }
 
+function drawSquare(x, y, w, h, thickness, strokeColor){
+  context.beginPath();
+  context.lineWidth=thickness;
+  context.strokeStyle= strokeColor;
+  context.rect(x,y,w,h); 
+  context.stroke();
+}
+
 async function loopResults(){
   if(!loopResultsReady){
     return;
@@ -246,6 +254,7 @@ async function loopResults(){
   const context = canvas.getContext('2d');
 
   context.clearRect(0, 0, canvas.width, canvas.height);
+
 
   //const resizedDetections = faceapi.resizeResults(detections, displaySize)
   //faceapi.draw.drawDetections(canvas, resizedDetections)
