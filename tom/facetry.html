@@ -233,6 +233,8 @@ async function onPlay(potato){
 }
 
 function drawSquare(x, y, w, h, thickness, strokeColor){
+  const context = canvas.getContext('2d');
+
   context.beginPath();
   context.lineWidth=thickness;
   context.strokeStyle= strokeColor;
