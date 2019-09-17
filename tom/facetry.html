@@ -37,7 +37,7 @@
     <button id="loopResults" onclick="loopResults()">Try Camera Frame</button>
     <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
     <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
-    <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="200" height="200px" id="videoCall" style="display: none;"> <br>
+    <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" hidden id="videoCall" style="display: none;"> <br>
   </div>
 
   <div id="container" class="container">
@@ -55,9 +55,10 @@
 <script>
   // ohmni code
   function captureVideo() {
+    loopResultsReady = false;
       intervalGetVideo = setInterval(function() {
         Ohmni.captureVideo();
-      }, 3000);
+      }, 2000);
       document.getElementById('videoCall').style.display = "";
       document.getElementById('stopCaptureVideo').style.display = "inline-block";
       document.getElementById('startCaptureVideo').style.display = "none";
@@ -70,6 +71,7 @@
   }
   function captureVideoCb(imageBase64) {
        document.getElementById("videoCall").src = imageBase64;
+       loopResults();
   }
   // Canvas code
   $(document).ready(function() {
@@ -214,7 +216,7 @@ async function onPlay(potato){
   //resize_canvas(potato);
   const MODEL_URL= 'weights';
 
-  console.log("models is loading");
+  console.log("model loading");
   await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
   console.log("model loaded");
 
@@ -225,12 +227,15 @@ async function onPlay(potato){
   faceapi.matchDimensions(canvas, displaySize);
 
   console.log("Face detection loaded, looping detection");
-
+  loopResultsReady = true;
   //loopResults();
   
 }
 
 async function loopResults(){
+  if(!loopResultsReady){
+    return;
+  }
   console.log("looping results");
   const mtcnnForwardParams = {
     // limiting the search space to larger faces for webcam detection
@@ -244,8 +249,14 @@ async function loopResults(){
 
   //const resizedDetections = faceapi.resizeResults(detections, displaySize)
   //faceapi.draw.drawDetections(canvas, resizedDetections)
-  console.log("detections");
-  console.log(detections);
+  if(detections.length > 0){
+    var box = detections[0]._box;
+    console.log(box);
+    drawSquare(box._x, box._y, box._width, box._height, 1, "#FF0000");
+  }
+  else{
+    console.log("No detections found")
+  }
 
 
   // const mtcnnResults = await faceapi.mtcnn(document.getElementById('videoElement'), mtcnnForwardParams);
