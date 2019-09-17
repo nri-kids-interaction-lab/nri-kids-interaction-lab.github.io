@@ -33,7 +33,8 @@
 <body>
   <div>
     <button id="unmuteButton">Start Mic</button>
-    <button id="play" onclick="onPlay()">Start Mic</button>
+    <button id="play" onclick="onPlay()">Load Models</button>
+    <button id="loopResults" onclick="loopResults()">Try Camera Frame</button>
     <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
     <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
     <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="200" height="200px" id="videoCall" style="display: none;"> <br>
@@ -225,7 +226,7 @@ async function onPlay(potato){
 
   console.log("Face detection loaded, looping detection");
 
-  loopResults();
+  //loopResults();
   
 }
 
@@ -243,11 +244,13 @@ async function loopResults(){
 
   const resizedDetections = faceapi.resizeResults(detections, displaySize)
   faceapi.draw.drawDetections(canvas, resizedDetections)
+  console.log("detections");
+  console.log(detections);
 
 
   // const mtcnnResults = await faceapi.mtcnn(document.getElementById('videoElement'), mtcnnForwardParams);
   // console.log(mtcnnResults);
-  loopResults();
+  //loopResults();
 }
 
 
