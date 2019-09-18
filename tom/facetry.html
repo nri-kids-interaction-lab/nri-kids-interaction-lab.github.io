@@ -25,6 +25,9 @@
   left: 0;
   z-index: 10;
   pointer-events:none;
+  margin-top: 62.9px; 
+  width: 1004px; 
+  height: 803.2px;
 }
 
 </style>
@@ -36,9 +39,6 @@
     <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
     <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
     <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="100%" height="100%" hidden id="videoCall" style="display: none;"> <br>
-  </div>
-
-  <div id="container" class="container">
     <canvas class="canvas" id="overlay" />
   </div>
 
@@ -46,7 +46,7 @@
 <script src="js/volume-meter.js"></script> 
 <script src="node_modules/face-api.js/dist/face-api.js"></script>
 
-
+<!--SCRIPT-->
 <script>
   // ohmni code
   function captureVideo() {
@@ -76,8 +76,8 @@
     
   // resize the canvas to fill browser window dynamically
   function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      //canvas.width = window.innerWidth;
+      //canvas.height = window.innerHeight;
   }
 
   function setGlobals(){
@@ -167,9 +167,9 @@
 
   function adjustBox(box){
     var xfac = box._x/300 * canvas.width;
-    var yfac = box._y/115 * canvas.height;
+    var yfac = box._y/150 * canvas.height;
     var wfac = box._width/300 * canvas.width;
-    var hfac = box._height/125 * canvas.height;
+    var hfac = box._height/150 * canvas.height;
 
     return [xfac,yfac,wfac,hfac];
   }
