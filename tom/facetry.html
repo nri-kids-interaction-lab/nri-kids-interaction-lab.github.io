@@ -52,22 +52,24 @@
   // ohmni code
   function captureVideo() {
     loopResultsReady = false;
-      intervalGetVideo = setInterval(function() {
+      /*intervalGetVideo = setInterval(function() {
         Ohmni.captureVideo();
-      }, 2000);
+      }, 2000);*/
+      Ohmni.captureVideo();
       document.getElementById('videoCall').style.display = "";
       document.getElementById('stopCaptureVideo').style.display = "inline-block";
       document.getElementById('startCaptureVideo').style.display = "none";
   }
   function stopCaptureVideo() {
-      clearInterval(intervalGetVideo);
+      //clearInterval(intervalGetVideo);
       document.getElementById('videoCall').style.display = "none";
       document.getElementById('startCaptureVideo').style.display = "inline-block";
       document.getElementById('stopCaptureVideo').style.display = "none";
   }
-  function captureVideoCb(imageBase64) {
+  async function captureVideoCb(imageBase64) {
        document.getElementById("videoCall").src = imageBase64;
-       loopResults();
+       await loopResults();
+       Ohmni.captureVideo();
   }
   // Canvas code
   $(document).ready(function() {
@@ -75,12 +77,6 @@
     // capture video start will go here
   });
     
-  // resize the canvas to fill browser window dynamically
-  function resizeCanvas() {
-      //canvas.width = window.innerWidth;
-      //canvas.height = window.innerHeight;
-  }
-
   function setGlobals(){
       canvas = document.getElementById('overlay');
       ctx = canvas.getContext('2d');
@@ -124,7 +120,6 @@
     await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
     console.log("model loaded");
 
-    resizeCanvas();
     input = document.getElementById('videoCall');
 
     displaySize = { width: canvas.width, height: canvas.height }
@@ -149,8 +144,7 @@
       // limiting the search space to larger faces for webcam detection
       minFaceSize: 20
     }
-    
-    console.log(tf.getBackend());
+
     const detections = await faceapi.detectAllFaces(input);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
