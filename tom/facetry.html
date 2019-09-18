@@ -24,10 +24,11 @@
   top: 0;
   left: 0;
   z-index: 10;
-  pointer-events:none;
   margin-top: 62.9px; 
+  pointer-events:none;
   width: 1004px; 
   height: 803.2px;
+  text-align: center;
 }
 
 </style>
@@ -148,24 +149,24 @@
       // limiting the search space to larger faces for webcam detection
       minFaceSize: 20
     }
-
+    
+    console.log(tf.getBackend());
     const detections = await faceapi.detectAllFaces(input);
 
-    if(detections.length > 0){
-      var box = detections[0]._box;
-      resizeCanvas();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for(var i = detection.length; i > 0; --i){
+      var box = detections[i]._box;
       var ad = adjustBox(box);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawSquare(ad[0],ad[1],ad[2],ad[3],3, "#FF0000");
+      drawSquare(ad[0],ad[1],ad[2],ad[3],1, "#FF0000");
       console.log(box);
     }
-    else{
+    if(detections.length == 0){
       console.log("No detections found")
     }
 
   }
 
-  function adjustBox(box){
+   function adjustBox(box){
     var xfac = box._x/300 * canvas.width;
     var yfac = box._y/150 * canvas.height;
     var wfac = box._width/300 * canvas.width;
