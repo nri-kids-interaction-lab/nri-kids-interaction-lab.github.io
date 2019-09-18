@@ -28,14 +28,13 @@
   pointer-events:none;
   width: 1004px; 
   height: 803.2px;
-  text-align: center;
 }
 
 </style>
 </head>
  
 <body>
-  <div>
+  <div style="text-align: center;">
     <button id="loopResults" onclick="loopResults()">Try Camera Frame</button>
     <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
     <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
@@ -66,12 +65,20 @@
       document.getElementById('startCaptureVideo').style.display = "inline-block";
       document.getElementById('stopCaptureVideo').style.display = "none";
   }
+  const sleep = (milliseconds) => {
+	  return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+
   async function captureVideoCb(imageBase64) {
        document.getElementById("videoCall").src = imageBase64;
        await loopResults();
-       Ohmni.captureVideo();
+       sleep(1000).then(() =>{
+            Ohmni.captureVideo();
+       });
   }
+
   // Canvas code
+
   $(document).ready(function() {
   	setGlobals();
     // capture video start will go here
