@@ -7,8 +7,8 @@
  
 <style>
 .container {
-  margin: 0 auto;
   position: relative;
+  text-align: center;
 }
 
 .video{
@@ -20,27 +20,36 @@
 }
 
 .canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
+  position: relative;
+  z-index: 9;
   margin-top: 62.9px; 
   pointer-events:none;
   width: 1004px; 
   height: 803.2px;
+  text-align: center;
+}
+
+.buttons{
+    z-index:10;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 </style>
 </head>
  
 <body>
-  <div style="text-align: center;">
-    <button id="loopResults" onclick="loopResults()">Try Camera Frame</button>
-    <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
-    <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
-    <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="100%" height="100%" hidden id="videoCall" style="display: none;"> <br>
-    <canvas class="canvas" id="overlay" />
+  <div class="container">
+    <canvas class="canvas" id="overlay"></canvas>
+    <div class="buttons">
+        <button id="loopResults" onclick="loopResults()">Try Camera Frame</button>
+        <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
+        <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
+        <img src="" width="100%" height="100%" id="videoCall" style="display: none;"> <br>
+    </div>
   </div>
+
 
 <script src="js/jquerymin.js"></script> 
 <script src="js/volume-meter.js"></script> 
@@ -50,21 +59,18 @@
 <script>
   // ohmni code
   function captureVideo() {
-    loopResultsReady = false;
-      /*intervalGetVideo = setInterval(function() {
-        Ohmni.captureVideo();
-      }, 2000);*/
+      loopResultsReady = false;
       Ohmni.captureVideo();
-      document.getElementById('videoCall').style.display = "";
       document.getElementById('stopCaptureVideo').style.display = "inline-block";
       document.getElementById('startCaptureVideo').style.display = "none";
   }
+  
   function stopCaptureVideo() {
-      //clearInterval(intervalGetVideo);
       document.getElementById('videoCall').style.display = "none";
       document.getElementById('startCaptureVideo').style.display = "inline-block";
       document.getElementById('stopCaptureVideo').style.display = "none";
   }
+
   const sleep = (milliseconds) => {
 	  return new Promise(resolve => setTimeout(resolve, milliseconds))
   }
@@ -146,11 +152,6 @@
       return;
     }
     console.log("looping results");
-    // still needs to be integrated
-    const mtcnnForwardParams = {
-      // limiting the search space to larger faces for webcam detection
-      minFaceSize: 20
-    }
 
     const detections = await faceapi.detectAllFaces(input);
 
