@@ -132,6 +132,9 @@
 
     console.log("Face detection loaded, looping detection");
     loopResultsReady = true;
+    input2 = document.getElementById("main-video-stream");
+    console.log("input2");
+    console.log(input2);
   }
 
   async function loopResults(){
@@ -166,7 +169,7 @@
     var xfac = box._x/300 * canvas.width;
     var yfac = box._y/115 * canvas.height;
     var wfac = box._width/300 * canvas.width;
-    var hfac = box._height/115 * canvas.height;
+    var hfac = box._height/125 * canvas.height;
 
     return [xfac,yfac,wfac,hfac];
   }
