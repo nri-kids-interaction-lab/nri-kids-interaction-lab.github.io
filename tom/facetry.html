@@ -96,8 +96,9 @@
   }
 
   async function captureVideoCb(imageBase64) {
+      var dims = await getImageDimensions(imageBase64);
+      console.log(dims);
        document.getElementById("videoCall").src = imageBase64;
-       await getImageDimensions(imageBase64);
        await loopResults();
        sleep(1000).then(() =>{
             Ohmni.captureVideo();
