@@ -59,8 +59,12 @@
 <script>
   // ohmni code
   function loopResultsDebug(){
-          loopResultsReady = false;
-        loopResults();
+    var x = document.querySelectorAll("video");
+    console.log(x);
+    var p = document.getElementById("main-video-stream");
+    console.log(p);
+        //loopResultsReady = false;
+        //loopResults();
   }
 
   function captureVideo() {
