@@ -67,6 +67,16 @@
         //loopResults();
   }
 
+  function getImageDimensions(file) {
+    return new Promise (function (resolved, rejected) {
+      var i = new Image()
+      i.onload = function(){
+        resolved({w: i.width, h: i.height})
+      };
+      i.src = file
+    })
+  }
+
   function captureVideo() {
       loopResultsReady = false;
       Ohmni.captureVideo();
@@ -87,6 +97,7 @@
 
   async function captureVideoCb(imageBase64) {
        document.getElementById("videoCall").src = imageBase64;
+       await getImageDimensions(imageBase64);
        await loopResults();
        sleep(1000).then(() =>{
             Ohmni.captureVideo();
@@ -140,7 +151,7 @@
     const MODEL_URL= 'weights';
 
     console.log("model loading");
-    await faceapi.nets.mtcnn.loadFromUri(MODEL_URL);
+    await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
 
     console.log("model loaded");
     input = document.getElementById('videoCall');
@@ -162,7 +173,7 @@
     }
     console.log("looping results");
 
-    detections = await faceapi.detectAllFaces(input, new faceapi.MtcnnOptions());
+    detections = await faceapi.detectAllFaces(input);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for(var i = detections.length-1; i >= 0; --i){
