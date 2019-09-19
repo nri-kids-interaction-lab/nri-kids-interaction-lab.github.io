@@ -136,10 +136,7 @@
 
     console.log("model loading");
     await faceapi.nets.mtcnn.loadFromUri(MODEL_URL);
-    const mtcnnOptions = new faceapi.MtcnnOptions(
 
-
-    );
     console.log("model loaded");
     input = document.getElementById('videoCall');
     displaySize = { width: canvas.width, height: canvas.height }
@@ -160,7 +157,7 @@
     }
     console.log("looping results");
 
-    detections = await faceapi.detectAllFaces(input, mtcnnOptions);
+    detections = await faceapi.detectAllFaces(input, new faceapi.MtcnnOptions());
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for(var i = detections.length-1; i >= 0; --i){
