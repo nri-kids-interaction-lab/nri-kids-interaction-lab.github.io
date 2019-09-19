@@ -43,7 +43,7 @@
   <div class="container">
     <canvas class="canvas" id="overlay"></canvas>
     <div class="buttons">
-        <button id="loopResults" onclick="loopResults()">Try Camera Frame</button>
+        <button id="loopResults" onclick="loopResultsDebug()">Try Camera Frame</button>
         <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
         <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
         <img src="" width="100%" height="100%" id="videoCall" style="display: none;"> <br>
@@ -58,6 +58,11 @@
 <!--SCRIPT-->
 <script>
   // ohmni code
+  function loopResultsDebug(){
+          loopResultsReady = false;
+        loopResults();
+  }
+
   function captureVideo() {
       loopResultsReady = false;
       Ohmni.captureVideo();
@@ -130,11 +135,13 @@
     const MODEL_URL= 'weights';
 
     console.log("model loading");
-    await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+    await faceapi.nets.mtcnn.loadFromUri(MODEL_URL);
+    const mtcnnOptions = new faceapi.MtcnnOptions(
+
+
+    );
     console.log("model loaded");
-
     input = document.getElementById('videoCall');
-
     displaySize = { width: canvas.width, height: canvas.height }
     canvas = document.getElementById('overlay');
     faceapi.matchDimensions(canvas, displaySize);
@@ -153,7 +160,7 @@
     }
     console.log("looping results");
 
-    const detections = await faceapi.detectAllFaces(input);
+    detections = await faceapi.detectAllFaces(input, mtcnnOptions);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for(var i = detections.length-1; i >= 0; --i){
