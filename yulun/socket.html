@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebSocket Playground</title>
+</head>
+<body>
+</body>
+
+<script>
+    const ambient_noise_levels = []; // stores data from the Android app
+
+    function setUpWebSocket() {
+        const socketProtocol = (window.location.protocol === 'https:' ? 'wss:' : 'ws:')
+        const hostname = "ohmni-android-comm.herokuapp.com";
+        const testHostname = "localhost:3000";
+        const echoSocketUrl = socketProtocol + '//' + hostname + '/echo/'
+        const socket = new WebSocket(echoSocketUrl);
+        socket.onopen = () => {
+            socket.send('Attemp to connect to server!');
+        }
+
+        socket.onmessage = e => {
+            // obtain the current time in miliseconds and append to array
+            const time = getTimeMili();
+            ambient_noise_levels.push({
+                    "time": time,
+                    "data": JSON.parse(e.data)
+            });
+            
+            // remove all messages that are 1 second eslier than the current one, delete it
+            while(ambient_noise_levels[ambient_noise_levels.length-1].time - ambient_noise_levels[0].time > 1000) {
+                ambient_noise_levels.shift();
+            }
+            console.log(ambient_noise_levels);
+            // console.log("Message from server: ", JSON.parse(e.data));
+            // console.log('Message from server:', e.data)
+        }
+
+        socket.onclose = e => {
+            setUpWebSocket();
+        }
+
+        socket.onerror = e => {
+            console.log("web socket error")
+        }
+    }
+
+    function getTimeMili() {
+        var d = new Date();
+        return d.getTime();
+    }
+
+    setUpWebSocket()
+
+
+</script>
+</html>
