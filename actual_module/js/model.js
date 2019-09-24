@@ -16,6 +16,10 @@ function getBotVolume() {
     Ohmni.getBotVolume();
 }
 
+function getBotVolumeCb(value) {
+    // console.log(value); // print out the current Bot Volume in the console
+}
+
 function obtainSpeakerOutput() {
     // equation:
     // speaker_output = 3.4 * bot_volume + 8 * ln(smoothed_input_volume) + 58
@@ -31,7 +35,7 @@ function obtainSpeakerOutput() {
         operatorVoicesLevelMean += operatorVoicesLevel[i];
     }
     operatorVoicesLevelMean /= operatorVoicesLevelMean.length;
-    
+
     // apply the equation and return the result
     const speakerOutput = 3.4 * botV + 8 * Math.log(operatorVoicesLevelMean + eps) + 58;
     return speakerOutput;
