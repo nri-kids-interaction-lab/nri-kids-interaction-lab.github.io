@@ -1,10 +1,10 @@
 // ***
 // socket.js
 // establish websocket connection to communication server of ohmni Android tablet and the overlay
-// receives and stores ambient sound level in ambient_noise_levels array
+// receives and stores ambient sound level in ambientNoiseLevels array
 // ***
 
-const ambient_noise_levels = []; // stores data from the Android app
+const ambientNoiseLevels = []; // stores data from the Android app
 
 function setUpWebSocket() {
     const socketProtocol = (window.location.protocol === 'https:' ? 'wss:' : 'ws:')
@@ -28,10 +28,10 @@ function setUpWebSocket() {
         // if it the message is the establishment message, process it
         console.log(message.data)
         if (message.data.message != "Connection to overlay established") {
-            ambient_noise_levels.push(message);
+            ambientNoiseLevels.push(message);
             // remove all messages that are 1 second eslier than the current one, delete it
-            while (ambient_noise_levels[ambient_noise_levels.length - 1].time - ambient_noise_levels[0].time > 1000) {
-                ambient_noise_levels.shift();
+            while (ambientNoiseLevels[ambientNoiseLevels.length - 1].time - ambientNoiseLevels[0].time > 1000) {
+                ambientNoiseLevels.shift();
             }
             // console.log("Message from server: ", JSON.parse(e.data));
             // console.log('Message from server:', e.data)

@@ -6,6 +6,7 @@
 <script src="js/audio_record.js"></script>
 <script src="js/jquerymin.js"></script>
 <script src="js/socket.js"></script>
+<script src="js/model.js"></script>
 
 <script src="node_modules/face-api.js/dist/face-api.js"></script>
 
@@ -73,7 +74,10 @@
     <!--SCRIPT-->
     <script>
         // set up websocket connection
-        setUpWebSocket()
+        setUpWebSocket();
+
+        console.log("finished set up websocket")
+        applyVoiceModel(10);
 
         // ohmni code
         function captureVideo() {
@@ -161,6 +165,7 @@
                 width: canvas.width,
                 height: canvas.height
             }
+            
             canvas = document.getElementById('overlay');
             faceapi.matchDimensions(canvas, displaySize);
 
@@ -184,7 +189,7 @@
             }
 
             const detections = await faceapi.detectAllFaces(input);
-
+            
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (var i = detections.length - 1; i >= 0; --i) {
                 var box = detections[i]._box;
@@ -192,10 +197,10 @@
                 drawSquare(ad[0], ad[1], ad[2], ad[3], 1, "#FF0000");
                 console.log(box);
             }
+
             if (detections.length == 0) {
                 console.log("No detections found")
             }
-
         }
 
         function adjustBox(box) {
@@ -203,7 +208,6 @@
             var yfac = box._y / 150 * canvas.height;
             var wfac = box._width / 300 * canvas.width;
             var hfac = box._height / 150 * canvas.height;
-
             return [xfac, yfac, wfac, hfac];
         }
     </script>

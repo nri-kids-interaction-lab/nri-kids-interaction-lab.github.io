@@ -20,38 +20,37 @@ SOFTWARE.
 var audioContext = null;
 var meter = null;
 var ctx = null;
-var WIDTH=500;
-var HEIGHT=50;
+var WIDTH = 500;
+var HEIGHT = 50;
 var rafID = null;
 
-var operator_voices_level = []; // store smoothed volume of robot operator
-const time_interval = 1000; // smoothing constant, in miliseconds
+var operatorVoicesLevel = []; // store smoothed volume of robot operator
+const smoothConst = 1000; // smoothing constant, in miliseconds
 
 
-function loadAudioContext(){
+function loadAudioContext() {
     // grab our canvas
-    ctx = document.getElementById( "meter" ).getContext("2d");
-    
+    ctx = document.getElementById("meter").getContext("2d");
+
     // monkeypatch Web Audio
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    
+
     // grab an audio context
     audioContext = new AudioContext();
 
     // Attempt to get audio input
     try {
         // monkeypatch getUserMedia
-        if(!navigator.getUserMedia){
-           navigator.getUserMedia = ( navigator.getUserMedia ||
-                       navigator.webkitGetUserMedia ||
-                       navigator.mozGetUserMedia ||
-                       navigator.msGetUserMedia);
+        if (!navigator.getUserMedia) {
+            navigator.getUserMedia = (navigator.getUserMedia ||
+                navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia ||
+                navigator.msGetUserMedia);
         }
 
         // ask for an audio input
-        navigator.getUserMedia(
-        {
-            audio:true
+        navigator.getUserMedia({
+            audio: true
         }, gotStream, didntGetStream);
     } catch (e) {
         alert('getUserMedia threw exception :' + e);
@@ -77,16 +76,16 @@ function gotStream(stream) {
     // set radius for lerp over frames
     volumeRadiusChange = 0;
     lastAlpha = 0;
-    
+
     // kick off the visual updating
     drawLoop();
 }
 
-function lerp(a, b, f){
+function lerp(a, b, f) {
     return a + f * (b - a);
 }
 
-function drawLoop( time ) {
+function drawLoop(time) {
     // clear the background
     ctx.canvas.width = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
@@ -103,13 +102,13 @@ function drawLoop( time ) {
     var slider3 = document.getElementById("myRange3");
     var slider4 = document.getElementById("myRange4");
 
-    lastAlpha =  meter.volume > slider1.value ?
-                 lerp(lastAlpha, meter.volume, slider2.value) :
-                 lerp(lastAlpha, 0, slider2.value);
+    lastAlpha = meter.volume > slider1.value ?
+        lerp(lastAlpha, meter.volume, slider2.value) :
+        lerp(lastAlpha, 0, slider2.value);
 
     volumeRadiusChange = meter.volume > slider1.value ?
-                         lerp(volumeRadiusChange, meter.volume * slider4.value, slider3.value) :
-                         lerp(volumeRadiusChange, 0, slider3.value);
+        lerp(volumeRadiusChange, meter.volume * slider4.value, slider3.value) :
+        lerp(volumeRadiusChange, 0, slider3.value);
 
     ctx.globalAlpha = lastAlpha;
 
@@ -117,27 +116,26 @@ function drawLoop( time ) {
     // console.log(meter.volume);
 
     // push measured volume to the array along with the timestamp
-    operator_voices_level.push(
-        {
-            "time": getTimeMili(),
-            "volume": meter.volume
-        });
+    operatorVoicesLevel.push({
+        "time": getTimeMili(),
+        "volume": meter.volume
+    });
 
     // delete all measures that are some time interval ago.
-    while(operator_voices_level[operator_voices_level.length - 1].time - operator_voices_level[0].time > time_interval) {
-        operator_voices_level.shift();
+    while (operatorVoicesLevel[operatorVoicesLevel.length - 1].time - operatorVoicesLevel[0].time > smoothConst) {
+        operatorVoicesLevel.shift();
     }
 
-    console.log(operator_voices_level);
-    var fullScreenRadius = Math.min(window.innerWidth/2.0, window.innerHeight/2.0);
+    console.log(operatorVoicesLevel);
+    var fullScreenRadius = Math.min(window.innerWidth / 2.0, window.innerHeight / 2.0);
     var circleRadius = fullScreenRadius - volumeRadiusChange;
     var grd = ctx.createRadialGradient(
-        window.innerWidth/2.0,  // small x 
-        window.innerHeight/2.0, // small y 
-        window.innerHeight/2.0, // small r
-        window.innerWidth/2.0,  // large x
-        window.innerHeight/2.0, // large y
-        window.innerHeight      // large r
+        window.innerWidth / 2.0, // small x 
+        window.innerHeight / 2.0, // small y 
+        window.innerHeight / 2.0, // small r
+        window.innerWidth / 2.0, // large x
+        window.innerHeight / 2.0, // large y
+        window.innerHeight // large r
     );
 
 
@@ -147,7 +145,7 @@ function drawLoop( time ) {
     ctx.fillStyle = grd;
 
     ctx.beginPath();
-    ctx.arc(window.innerWidth/2.0, window.innerHeight/2.0, circleRadius, 0, 2 * Math.PI);
+    ctx.arc(window.innerWidth / 2.0, window.innerHeight / 2.0, circleRadius, 0, 2 * Math.PI);
     ctx.rect(window.innerWidth, 0, -window.innerWidth, window.innerHeight);
     ctx.fill();
 
@@ -155,7 +153,7 @@ function drawLoop( time ) {
 
 
     // set up the next visual callback
-    rafID = window.requestAnimationFrame( drawLoop );
+    rafID = window.requestAnimationFrame(drawLoop);
 }
 
 function getTimeMili() {
