@@ -6,6 +6,7 @@
 // regard faceHeight and faceWidth as constant for now
 const actualFaceHeight = 0.225; // meter
 const actualFaceWidth = 0.14; // meter
+var botV = 0;
 
 function setBotVolume(value) {
     // Value must be from 1 to 11.
@@ -16,8 +17,9 @@ function getBotVolume() {
     Ohmni.getBotVolume();
 }
 
+// call back of getBotVolume
 function getBotVolumeCb(value) {
-    // console.log(value); // print out the current Bot Volume in the console
+    botV = value;
 }
 
 function obtainSpeakerOutput() {
@@ -25,7 +27,7 @@ function obtainSpeakerOutput() {
     // speaker_output = 3.4 * bot_volume + 8 * ln(smoothed_input_volume) + 58
 
     // obtain bot volume
-    const botV = getBotVolume();
+    getBotVolume();
     console.log("botV: " + botV);
     const eps = 1e-8; // small constant added to the operator voice level to avoid outputing neg inf from Math.log
 
