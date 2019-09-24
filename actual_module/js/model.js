@@ -34,10 +34,11 @@ function obtainSpeakerOutput() {
     // obtain smoothed input volume of the speaker
     var operatorVoicesLevelMean = 0;
     for (var i = 0; i < operatorVoicesLevel.length; i++) {
-        operatorVoicesLevelMean += operatorVoicesLevel[i];
+        operatorVoicesLevelMean += operatorVoicesLevel[i].volume;
     }
     operatorVoicesLevelMean /= operatorVoicesLevelMean.length;
-
+    console.log(operatorVoicesLevel);
+    console.log(operatorVoicesLevelMean);
     // apply the equation and return the result
     const speakerOutput = 3.4 * botV + 8 * Math.log(operatorVoicesLevelMean + eps) + 58;
     return speakerOutput;
@@ -49,7 +50,7 @@ function applyVoiceModel(pixelFaceHeight) {
     // // obtain the ambient average ambient noise
     // var ambientNoiseMean = 0;
     // for(var i=0; i<ambientNoiseLevels.length; i++) {
-    //     ambientNoiseMean += ambientNoiseLevels[i];
+    //     ambientNoiseMean += ambientNoiseLevels[i].data;
     // }
     // ambientNoiseMean /= ambientNoiseLevels.length;
 
