@@ -126,7 +126,10 @@ function drawLoop(time) {
         operatorVoicesLevel.shift();
     }
 
-    console.log(operatorVoicesLevel);
+    applyVoiceModel(10);
+
+
+    // console.log(operatorVoicesLevel);
     var fullScreenRadius = Math.min(window.innerWidth / 2.0, window.innerHeight / 2.0);
     var circleRadius = fullScreenRadius - volumeRadiusChange;
     var grd = ctx.createRadialGradient(
