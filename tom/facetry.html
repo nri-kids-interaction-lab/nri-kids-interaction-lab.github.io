@@ -79,7 +79,7 @@
 
   function captureVideo() {
       loopResultsReady = false;
-      Ohmni.captureVideo();
+      Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
       document.getElementById('videoCall').style.display = "";
       document.getElementById('stopCaptureVideo').style.display = "inline-block";
       document.getElementById('startCaptureVideo').style.display = "none";
@@ -96,12 +96,10 @@
   }
 
   async function captureVideoCb(imageBase64) {
-      var dims = await getImageDimensions(imageBase64);
-      console.log(dims);
        document.getElementById("videoCall").src = imageBase64;
        await loopResults();
        sleep(1000).then(() =>{
-            Ohmni.captureVideo();
+            Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
        });
   }
 
@@ -116,6 +114,8 @@
       canvas = document.getElementById('overlay');
       ctx = canvas.getContext('2d');
       volume_set = false;
+      videoCallBackWidth = 640;
+      videoCallBackHeight = 480;
   }
 
   function getCenterFromWH(width,height){
@@ -190,10 +190,10 @@
   }
 
    function adjustBox(box){
-    var xfac = box._x/300 * canvas.width;
-    var yfac = box._y/150 * canvas.height;
-    var wfac = box._width/300 * canvas.width;
-    var hfac = box._height/150 * canvas.height;
+    var xfac = box._x/videoCallBackWidth * canvas.width;
+    var yfac = box._y/videoCallBackHeight * canvas.height;
+    var wfac = box._width/videoCallBackWidth * canvas.width;
+    var hfac = box._height/videoCallBackHeight * canvas.height;
 
     return [xfac,yfac,wfac,hfac];
   }
