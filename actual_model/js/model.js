@@ -37,7 +37,9 @@ function obtainSpeakerOutput() {
         operatorVoicesLevelMean += operatorVoicesLevel[i].volume;
         // console.log(operatorVoicesLevelMean);
     }
-    operatorVoicesLevelMean /= operatorVoicesLevel.length;
+    if(operatorVoicesLevel.length > 0) {
+        operatorVoicesLevelMean /= operatorVoicesLevel.length;
+    }
     // console.log(operatorVoicesLevel);
     // console.log("mean: " + operatorVoicesLevelMean);
     // apply the equation and return the result
@@ -50,15 +52,17 @@ function applyVoiceModel(pixelFaceHeight) {
     console.log("speaker output: " + speakerOutput);
     // obtain the ambient average ambient noise
     var ambientNoiseMean = 0;
+    console.log("empty ambient: " + ambientNoiseLevels);
     for(var i=0; i<ambientNoiseLevels.length; i++) {
         ambientNoiseMean += ambientNoiseLevels[i].noiseLevel;
     }
-    ambientNoiseMean /= ambientNoiseLevels.length;
+    if(ambientNoiseLevels.length > 0) {
+        ambientNoiseMean /= ambientNoiseLevels.length;
+    }
     console.log("ambient mean: " + ambientNoiseMean);
     
-
-    // obtain the distance to the face
-    const distanceToFace = (0.5*actualFaceHeight) / Math.tan(0.5*pixelFaceHeight)
+    // obtain the distance to the face d = .5 * .225 / tan(.5 * h_pix *  0.0090175)
+    const distanceToFace = 0.5 * 0.225 / Math.tan(0.5 * pixelFaceHeight * 0.0090175)
     console.log("distance to face: " + distanceToFace);
 
     // obtain the threshold
