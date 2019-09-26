@@ -51,12 +51,15 @@ function applyVoiceModel(pixelFaceHeight) {
     // obtain the ambient average ambient noise
     var ambientNoiseMean = 0;
     for(var i=0; i<ambientNoiseLevels.length; i++) {
-        ambientNoiseMean += ambientNoiseLevels[i].data;
+        ambientNoiseMean += ambientNoiseLevels[i].noiseLevel;
     }
     ambientNoiseMean /= ambientNoiseLevels.length;
+    console.log("ambient mean: " + ambientNoiseMean);
+    
 
     // obtain the distance to the face
     const distanceToFace = (0.5*actualFaceHeight) / Math.tan(0.5*pixelFaceHeight)
+
 
     // obtain the threshold
     const minIntelligibleMumblingVolume = 0.01168*ambientNoiseMean + 6.90635*distanceToFace;

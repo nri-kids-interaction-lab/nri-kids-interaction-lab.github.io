@@ -19,7 +19,7 @@ function setUpWebSocket() {
     socket.onmessage = e => {
         // obtain the current time in miliseconds and append to array
         const message = JSON.parse(e.data)
-        console.log("message: " + JSON.stringify(message));
+        // console.log("Noise level received: " + JSON.stringify(message));
 
         // if it the message is the establishment message, process it
         // console.log(message)
