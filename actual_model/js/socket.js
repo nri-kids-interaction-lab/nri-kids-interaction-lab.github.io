@@ -18,15 +18,11 @@ function setUpWebSocket() {
 
     socket.onmessage = e => {
         // obtain the current time in miliseconds and append to array
-        const time = getTimeMili();
-        const message = {
-            "time": time,
-            "data": JSON.parse(e.data)
-        }
-        console.log(JSON.stringify(message));
+        const message = JSON.parse(e.data)
+        console.log("message: " + JSON.stringify(message));
 
         // if it the message is the establishment message, process it
-        console.log(message.data)
+        // console.log(message)
         if (message.data.message != "Connection to overlay established") {
             ambientNoiseLevels.push(message);
             // remove all messages that are 1 second eslier than the current one, delete it
@@ -47,7 +43,7 @@ function setUpWebSocket() {
     }
 }
 
-function getTimeMili() {
-    var d = new Date();
-    return d.getTime();
-}
+// function getTimeMili() {
+//     var d = new Date();
+//     return d.getTime();
+// }
