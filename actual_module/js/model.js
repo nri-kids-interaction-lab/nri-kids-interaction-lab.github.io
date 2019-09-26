@@ -35,10 +35,11 @@ function obtainSpeakerOutput() {
     var operatorVoicesLevelMean = 0;
     for (var i = 0; i < operatorVoicesLevel.length; i++) {
         operatorVoicesLevelMean += operatorVoicesLevel[i].volume;
+        print(operatorVoicesLevel[i].volume);
     }
     operatorVoicesLevelMean /= operatorVoicesLevelMean.length;
-    console.log(operatorVoicesLevel);
-    console.log(operatorVoicesLevelMean);
+    // console.log(operatorVoicesLevel);
+    console.log("mean: " + operatorVoicesLevelMean);
     // apply the equation and return the result
     const speakerOutput = 3.4 * botV + 8 * Math.log(operatorVoicesLevelMean + eps) + 58;
     return speakerOutput;
