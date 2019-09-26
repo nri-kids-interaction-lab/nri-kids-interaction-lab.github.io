@@ -6,6 +6,7 @@
 <title>Display Webcam Stream</title>
  
 <style>
+
 .container {
   position: relative;
   text-align: center;
@@ -22,10 +23,9 @@
 .canvas {
   position: relative;
   z-index: 9;
-  margin-top: 62.9px; 
   pointer-events:none;
-  width: 1004px; 
-  height: 803.2px;
+  width: 872.5px; 
+  height: 698px;
   text-align: center;
 }
 
@@ -35,6 +35,8 @@
     top: 0;
     left: 0;
 }
+
+body { margin:0; }
 
 </style>
 </head>
@@ -79,8 +81,8 @@
 
   function captureVideo() {
       loopResultsReady = false;
-      Ohmni.captureVideo();
-      document.getElementById('videoCall').style.display = "";
+      Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
+      document.getElementById('videoCall').style.display = "none";
       document.getElementById('stopCaptureVideo').style.display = "inline-block";
       document.getElementById('startCaptureVideo').style.display = "none";
   }
@@ -96,12 +98,10 @@
   }
 
   async function captureVideoCb(imageBase64) {
-      var dims = await getImageDimensions(imageBase64);
-      console.log(dims);
        document.getElementById("videoCall").src = imageBase64;
        await loopResults();
        sleep(1000).then(() =>{
-            Ohmni.captureVideo();
+            Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
        });
   }
 
@@ -116,6 +116,8 @@
       canvas = document.getElementById('overlay');
       ctx = canvas.getContext('2d');
       volume_set = false;
+      videoCallBackWidth = 872;
+      videoCallBackHeight = 698;
   }
 
   function getCenterFromWH(width,height){
@@ -190,10 +192,10 @@
   }
 
    function adjustBox(box){
-    var xfac = box._x/300 * canvas.width;
-    var yfac = box._y/150 * canvas.height;
-    var wfac = box._width/300 * canvas.width;
-    var hfac = box._height/150 * canvas.height;
+    var xfac = box._x/videoCallBackWidth * canvas.width;
+    var yfac = box._y/videoCallBackHeight * canvas.height;
+    var wfac = box._width/videoCallBackWidth * canvas.width;
+    var hfac = box._height/videoCallBackHeight * canvas.height;
 
     return [xfac,yfac,wfac,hfac];
   }
