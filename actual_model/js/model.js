@@ -59,8 +59,9 @@ function applyVoiceModel(pixelFaceHeight) {
 
     // obtain the distance to the face
     const distanceToFace = (0.5*actualFaceHeight) / Math.tan(0.5*pixelFaceHeight)
-
+    console.log("distance to face: " + distanceToFace);
 
     // obtain the threshold
     const minIntelligibleMumblingVolume = 0.01168*ambientNoiseMean + 6.90635*distanceToFace;
+    console.log("threshold: " + minIntelligibleMumblingVolume);
 }
