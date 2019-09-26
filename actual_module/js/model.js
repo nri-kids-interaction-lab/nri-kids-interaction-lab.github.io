@@ -35,7 +35,7 @@ function obtainSpeakerOutput() {
     var operatorVoicesLevelMean = 0;
     for (var i = 0; i < operatorVoicesLevel.length; i++) {
         operatorVoicesLevelMean += operatorVoicesLevel[i].volume;
-        print(operatorVoicesLevel[i].volume);
+        console.log(operatorVoicesLevel[i].volume);
     }
     operatorVoicesLevelMean /= operatorVoicesLevelMean.length;
     // console.log(operatorVoicesLevel);
