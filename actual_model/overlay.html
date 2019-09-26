@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<script src="https://app.ohmnilabs.com/api/Ohmni-incall.js"></script>
+<script src="js/volume_meter.js"></script>
+<script src="js/audio_record.js"></script>
+<script src="js/jquerymin.js"></script>
+<script src="js/socket.js"></script>
+<script src="js/model.js"></script>
+
+<script src="node_modules/face-api.js/dist/face-api.js"></script>
+
+<head>
+    <meta charset="utf-8">
+    <title>Display Webcam Stream</title>
+
+    <style>
+        .container {
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .video {
+            width: 100%;
+            height: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            margin-top: 62.9px;
+            pointer-events: none;
+            width: 1004px;
+            height: 803.2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="text-align: center;">
+        <button id="loopResults" onclick="loopResults()">Try Camera Frame</button>
+        <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
+        <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
+
+        <!--Used for volume meter-->
+        <button onclick="loadAudioContext()" data-external="true">Start Audio Sensing</button>
+
+        <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="100%" height="100%" hidden id="videoCall" style="display: none;"> <br>
+        <canvas class="canvas" id="overlay" />
+
+        <!--Used for volume meter-->
+        <div hidden class="unclickable">
+            <canvas id="meter" width="500" height="50"></canvas>
+        </div>
+        <div hidden class="slidecontainer">
+            <input hidden type="range" min="0" max="1" value="0.5" step="0.01" class="slider" id="myRange">
+        </div>
+        <div class="slidecontainer">
+            <input hidden type="range" min="0" max="1" value="0.5" step="0.01" class="slider" id="myRange2">
+        </div>
+        <div class="slidecontainer">
+            <input hidden type="range" min="0" max="1" value="0.5" step="0.01" class="slider" id="myRange3">
+        </div>
+        <div class="slidecontainer">
+            <input hidden type="range" min="0" max="1000" value="500" step="10" class="slider" id="myRange4">
+        </div>
+    </div>
+
+    <!--SCRIPT-->
+    <script>
+        // set up websocket connection
+        setUpWebSocket();
+
+        console.log("finished set up websocket")
+
+        // ohmni code
+        function captureVideo() {
+            loopResultsReady = false;
+            /*intervalGetVideo = setInterval(function() {
+              Ohmni.captureVideo();
+            }, 2000);*/
+            Ohmni.captureVideo();
+            document.getElementById('videoCall').style.display = "";
+            document.getElementById('stopCaptureVideo').style.display = "inline-block";
+            document.getElementById('startCaptureVideo').style.display = "none";
+        }
+
+        function stopCaptureVideo() {
+            //clearInterval(intervalGetVideo);
+            document.getElementById('videoCall').style.display = "none";
+            document.getElementById('startCaptureVideo').style.display = "inline-block";
+            document.getElementById('stopCaptureVideo').style.display = "none";
+        }
+        const sleep = (milliseconds) => {
+            return new Promise(resolve => setTimeout(resolve, milliseconds))
+        }
+
+        async function captureVideoCb(imageBase64) {
+            document.getElementById("videoCall").src = imageBase64;
+            await loopResults();
+            sleep(1000).then(() => {
+                Ohmni.captureVideo();
+            });
+        }
+
+        // Canvas code
+
+        $(document).ready(function() {
+            setGlobals();
+            // capture video start will go here
+        });
+
+        function setGlobals() {
+            canvas = document.getElementById('overlay');
+            ctx = canvas.getContext('2d');
+            volume_set = false;
+        }
+
+        function getCenterFromWH(width, height) {
+            return [(canvas.width - width) / 2.0, (canvas.height - height) / 2.0 - 200]
+        }
+
+        function getStrokeColor(color) {
+            var frequency = .3;
+            var red = Math.floor(Math.sin(frequency * color + 0) * 127 + 128);
+            var green = Math.floor(Math.sin(frequency * color + 2) * 127 + 128);
+            var blue = Math.floor(Math.sin(frequency * color + 4) * 127 + 128);
+            return "#" +
+                red.toString(16) +
+                green.toString(16) +
+                blue.toString(16);
+        }
+
+        function drawSquare(x, y, w, h, thickness, strokeColor) {
+            ctx.beginPath();
+            ctx.lineWidth = thickness;
+            ctx.strokeStyle = strokeColor;
+            ctx.rect(x, y, w, h);
+            ctx.stroke();
+        }
+
+        function drawCancel() {
+            // how to change transparency
+            ctx.globalAlpha = 0.5
+                //ctx.drawImage(image, 10, 10);
+            ctx.globalAlpha = 1
+        }
+
+        async function onPlay(potato) {
+            const MODEL_URL = 'weights';
+
+            console.log("model loading");
+            await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+            console.log("model loaded");
+
+            input = document.getElementById('videoCall');
+
+            displaySize = {
+                width: canvas.width,
+                height: canvas.height
+            }
+            
+            canvas = document.getElementById('overlay');
+            faceapi.matchDimensions(canvas, displaySize);
+
+            console.log("Face detection loaded, looping detection");
+            loopResultsReady = true;
+            input2 = document.getElementById("main-video-stream");
+            console.log("input2");
+            console.log(input2);
+        }
+
+        async function loopResults() {
+            if (!loopResultsReady) {
+                onPlay();
+                return;
+            }
+            console.log("looping results");
+            // still needs to be integrated
+            const mtcnnForwardParams = {
+                // limiting the search space to larger faces for webcam detection
+                minFaceSize: 20
+            }
+
+            const detections = await faceapi.detectAllFaces(input);
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (var i = detections.length - 1; i >= 0; --i) {
+                var box = detections[i]._box;
+                var ad = adjustBox(box);
+                drawSquare(ad[0], ad[1], ad[2], ad[3], 1, "#FF0000");
+                console.log(box);
+            }
+
+            if (detections.length == 0) {
+                console.log("No detections found")
+            }
+        }
+
+        function adjustBox(box) {
+            var xfac = box._x / 300 * canvas.width;
+            var yfac = box._y / 150 * canvas.height;
+            var wfac = box._width / 300 * canvas.width;
+            var hfac = box._height / 150 * canvas.height;
+            return [xfac, yfac, wfac, hfac];
+        }
+    </script>
+</body>
+
+</html>
