@@ -24,8 +24,8 @@
   position: relative;
   z-index: 9;
   pointer-events:none;
-  width: 872.5px; 
-  height: 698px;
+  width: 1173.75px; 
+  height: 939px;
   text-align: center;
 }
 
@@ -48,7 +48,7 @@ body { margin:0; }
         <button id="loopResults" onclick="loopResultsDebug()">Try Camera Frame</button>
         <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
         <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
-        <img src="" width="1280" height="1024" id="videoCall" style="display: none;"> <br>
+        <img src="" id="videoCall" style="display: none;"> <br>
     </div>
   </div>
 
@@ -61,12 +61,8 @@ body { margin:0; }
 <script>
   // ohmni code
   function loopResultsDebug(){
-    // var x = document.querySelectorAll("video");
-    // console.log(x);
     var p = parent.document.getElementById("main-video-stream");
     console.log(p);
-        //loopResultsReady = false;
-        //loopResults();
   }
 
   function getImageDimensions(file) {
@@ -116,8 +112,8 @@ body { margin:0; }
       canvas = document.getElementById('overlay');
       ctx = canvas.getContext('2d');
       volume_set = false;
-      videoCallBackWidth = 872;
-      videoCallBackHeight = 698;
+      videoCallBackWidth = 1173;
+      videoCallBackHeight = 939; // YULUN HERE
   }
 
   function getCenterFromWH(width,height){
