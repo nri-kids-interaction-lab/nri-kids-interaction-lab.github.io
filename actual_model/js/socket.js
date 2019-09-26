@@ -23,7 +23,7 @@ function setUpWebSocket() {
 
         // if it the message is the establishment message, process it
         // console.log(message)
-        if (message.data.message != "Connection to overlay established") {
+        if (message.message != "Connection to overlay established") {
             ambientNoiseLevels.push(message);
             // remove all messages that are 1 second eslier than the current one, delete it
             while (ambientNoiseLevels[ambientNoiseLevels.length - 1].time - ambientNoiseLevels[0].time > 1000) {
