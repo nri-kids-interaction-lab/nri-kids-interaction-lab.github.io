@@ -28,17 +28,20 @@ function obtainSpeakerOutput() {
 
     // obtain bot volume
     getBotVolume();
-    console.log("botV: " + botV);
+    // console.log("botV: " + botV);
     const eps = 1e-8; // small constant added to the operator voice level to avoid outputing neg inf from Math.log
 
     // obtain smoothed input volume of the speaker
     var operatorVoicesLevelMean = 0;
     for (var i = 0; i < operatorVoicesLevel.length; i++) {
         operatorVoicesLevelMean += operatorVoicesLevel[i].volume;
+        // console.log(operatorVoicesLevelMean);
     }
-    operatorVoicesLevelMean /= operatorVoicesLevelMean.length;
-    console.log(operatorVoicesLevel);
-    console.log(operatorVoicesLevelMean);
+    if(operatorVoicesLevel.length > 0) {
+        operatorVoicesLevelMean /= operatorVoicesLevel.length;
+    }
+    // console.log(operatorVoicesLevel);
+    // console.log("mean: " + operatorVoicesLevelMean);
     // apply the equation and return the result
     const speakerOutput = 3.4 * botV + 8 * Math.log(operatorVoicesLevelMean + eps) + 58;
     return speakerOutput;
@@ -47,16 +50,22 @@ function obtainSpeakerOutput() {
 function applyVoiceModel(pixelFaceHeight) {
     const speakerOutput = obtainSpeakerOutput();
     console.log("speaker output: " + speakerOutput);
-    // // obtain the ambient average ambient noise
-    // var ambientNoiseMean = 0;
-    // for(var i=0; i<ambientNoiseLevels.length; i++) {
-    //     ambientNoiseMean += ambientNoiseLevels[i].data;
-    // }
-    // ambientNoiseMean /= ambientNoiseLevels.length;
+    // obtain the ambient average ambient noise
+    var ambientNoiseMean = 0;
+    console.log("empty ambient: " + ambientNoiseLevels);
+    for(var i=0; i<ambientNoiseLevels.length; i++) {
+        ambientNoiseMean += ambientNoiseLevels[i].noiseLevel;
+    }
+    if(ambientNoiseLevels.length > 0) {
+        ambientNoiseMean /= ambientNoiseLevels.length;
+    }
+    console.log("ambient mean: " + ambientNoiseMean);
+    
+    // obtain the distance to the face d = .5 * .225 / tan(.5 * h_pix *  0.0090175)
+    const distanceToFace = 0.5 * 0.225 / Math.tan(0.5 * pixelFaceHeight * 0.0090175)
+    console.log("distance to face: " + distanceToFace);
 
-    // // obtain the distance to the face
-    // const distanceToFace = (0.5*actualFaceHeight) / Math.tan(0.5*pixelFaceHeight)
-
-    // // obtain the threshold
-    // const minIntelligibleMumblingVolume = 0.01168*ambientNoiseMean + 6.90635*distanceToFace;
+    // obtain the threshold
+    const minIntelligibleMumblingVolume = 0.01168*ambientNoiseMean + 6.90635*distanceToFace;
+    console.log("threshold: " + minIntelligibleMumblingVolume);
 }
