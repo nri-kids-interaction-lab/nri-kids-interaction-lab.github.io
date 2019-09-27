@@ -77,7 +77,7 @@
     function captureVideo() {
       intervalGetVideo = setInterval(function() {
         Ohmni.captureVideo(resolutionWidth, resolutionHeight);
-      }, 33);
+      }, 1000);
       document.getElementById('videoCall').style.display = "";
       document.getElementById('stopCaptureVideo').style.display = "inline-block";
       document.getElementById('startCaptureVideo').style.display = "none";
