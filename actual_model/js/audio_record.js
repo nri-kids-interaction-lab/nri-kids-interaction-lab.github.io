@@ -28,9 +28,9 @@ var operatorVoicesLevel = []; // store smoothed volume of robot operator
 const smoothConst = 1000; // smoothing constant, in miliseconds
 
 
-async function loadAudioContext() {
+function loadAudioContext() {
     // grab our canvas
-    ctx = document.getElementById("meter").getContext("2d");
+    // ctx = document.getElementById("meter").getContext("2d");
 
     // monkeypatch Web Audio
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -170,3 +170,6 @@ function getTimeMili() {
     var d = new Date();
     return d.getTime();
 }
+
+// runs audio recorder in another thread
+loadAudioContext();

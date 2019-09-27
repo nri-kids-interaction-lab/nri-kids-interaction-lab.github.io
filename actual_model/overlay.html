@@ -65,7 +65,7 @@
             <img src="" id="videoCall" style="display: none;"> <br>
             <!-- audio sensing button -->
             <button onclick="loadAudioContext()" data-external="true">Start Audio Sensing</button>
-            <button onclick="test()"></button>
+            <button onclick="test()">Test</button>
         </div>
     </div>
 
@@ -95,12 +95,17 @@
 
     <!--SCRIPT-->
     <script>
+        var audioSensingWorker = new Worker('/js/audio_record.js');
+        
+        // while(1) {
+        //     console.log(operatorVoicesLevel[operatorVoicesLevel.length-1]);
+        // }
+        
 
         async function test() {
             for(var i = 0; i < 100; i++) {
                 console.log(i + " multi?");
             }
-            
         }
 
         // set up websocket connection
