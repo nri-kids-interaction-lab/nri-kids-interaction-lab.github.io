@@ -68,4 +68,12 @@ function applyVoiceModel(pixelFaceHeight) {
     // obtain the threshold
     const minIntelligibleMumblingVolume = 0.01168*ambientNoiseMean + 6.90635*distanceToFace;
     console.log("threshold: " + minIntelligibleMumblingVolume);
+
+    // if the speaker output is above threshold, return true (the listener can hear the speaker, else return false)
+    if(speakerOutput >= minIntelligibleMumblingVolume) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
