@@ -218,7 +218,7 @@
                 var ad = adjustBox(box);
                 
                 // check whether the listener can hear the voice, if yes, change color of bounding box to green
-                const color = "#FF0000"; // default to red, cannot hear
+                var color = "#FF0000"; // default to red, cannot hear
                 if(applyVoiceModel(box._height)) {
                     color = "#008000";
                 }
