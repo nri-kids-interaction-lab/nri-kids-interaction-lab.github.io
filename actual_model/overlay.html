@@ -219,10 +219,10 @@
                 // console.log(ad);
                 // check whether the listener can hear the voice, if yes, change color of bounding box to green
                 var color = "#FF0000"; // default to red, cannot hear
-                if(applyVoiceModel(box._height)) {
+                if (applyVoiceModel(box._height)) {
                     color = "#008000";
                 }
-                
+
                 drawSquare(ad[0], ad[1], ad[2], ad[3], 1, color);
                 console.log(box);
             }
