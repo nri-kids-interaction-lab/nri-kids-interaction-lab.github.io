@@ -28,7 +28,7 @@ var operatorVoicesLevel = []; // store smoothed volume of robot operator
 const smoothConst = 1000; // smoothing constant, in miliseconds
 
 
-function loadAudioContext() {
+async function loadAudioContext() {
     // grab our canvas
     ctx = document.getElementById("meter").getContext("2d");
 
