@@ -10,9 +10,16 @@
     // START of code for Matt's buttons
 
     function updateResolution() {
-      resolutionWidth = document.getElementById("widthBox").value;
-      resolutionHeight = document.getElementById("heightBox").value;
+      resolutionWidth = document.getElementById("widthInput").value;
+      resolutionHeight = document.getElementById("heightInput").value;
       console.log(resolutionWidth, resolutionHeight)      
+    }
+
+    function captureOneVideoFrame() {
+      Ohmni.captureVideo(resolutionWidth, resolutionHeight);
+      document.getElementById('videoCall').style.display = "";
+      document.getElementById('stopCaptureVideo').style.display = "inline-block";
+      document.getElementById('startCaptureVideo').style.display = "none";
     }
 
     function sendJsonCmd(jsonData) {
@@ -168,10 +175,36 @@
 
       <form action="javascript:updateResolution()">
         <p> Enter the resolution of image you'd like to request from the camera, then press "Submit". </p>
-        Width: <input type="number" id="widthBox" />
-        Height: <input type="number" id="heightBox" />
-        <input type="submit" value="Submit">
+        <div>
+        <input type="range" min="1" max="3000" value="640" id="widthInput" />
+        <p>Width: <span id="widthValue"/></p>
+        </div>
+        <div>
+        <input type="range" min="1" max="3000" value="480" id="heightInput" />
+        <p>Height: <span id="heightValue"/></p>
+        </div>
+        <input type="submit" value="Submit"/>
       </form>
+
+      <script type="text/javascript">
+        var sliderWidth = document.getElementById("widthInput");
+        var sliderHeight = document.getElementById("heightInput");
+
+        var displayWidth = document.getElementById("widthValue");
+        var displayHeight = document.getElementById("heightValue");
+
+        displayWidth.innerHTML = sliderWidth.value;
+        displayHeight.innerHTML = sliderHeight.value;
+
+        sliderWidth.oninput = function() {
+          displayWidth.innerHTML = this.value;
+        }
+        sliderHeight.oninput = function() {
+          displayHeight.innerHTML = this.value;
+        }
+      </script>
+
+      <button type="button" id="captureOneVideoFrame" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureOneVideoFrame();">Capture just one video frame</button><br>
 
       <button type="button" id="captureAudio" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureAudio();">captureAudio</button><br>
       <button type="button" id="stopCaptureAudio" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px;display: none;" onclick="stopCaptureAudio();">stopCaptureAudio</button><br>
