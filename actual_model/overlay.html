@@ -16,10 +16,10 @@
 
     <style>
         .container {
-            margin: 0 auto;
             position: relative;
+            text-align: center;
         }
-        
+
         .video {
             width: 100%;
             height: auto;
@@ -27,31 +27,52 @@
             top: 0;
             left: 0;
         }
-        
+
         .canvas {
+            position: relative;
+            z-index: 9;
+            pointer-events: none;
+            width: 1173.75px;
+            height: 939px;
+            text-align: center;
+        }
+
+        .buttons {
+            z-index: 10;
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 10;
-            margin-top: 62.9px;
-            pointer-events: none;
-            width: 1004px;
-            height: 803.2px;
+        }
+
+        body {
+            margin: 0;
         }
     </style>
 </head>
 
 <body>
+    <!-- used for face detector -->
+    <div class="container">
+        <canvas class="canvas" id="overlay"></canvas>
+        <div class="buttons">
+            <button id="loopResults" onclick="loopResultsDebug()">Try Camera Frame</button>
+            <button type="button" id="startCaptureVideo" data-external="true" class="button"
+                style="padding:30px;margin:20px; margin-top: 60px"
+                onclick="captureVideo();">startCaptureVideo</button><br>
+            <button type="button" id="stopCaptureVideo" data-external="true" class="button"
+                style="padding:30px;margin:20px; margin-top: 60px; display: none;"
+                onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
+            <img src="" id="videoCall" style="display: none;"> <br>
+            <!-- audio sensing button -->
+            <button onclick="loadAudioContext()" data-external="true">Start Audio Sensing</button>
+        </div>
+    </div>
+
+    <!--Used for volume meter-->
     <div style="text-align: center;">
-        <button id="loopResults" onclick="loopResults()">Try Camera Frame</button>
-        <button type="button" id="startCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureVideo();">startCaptureVideo</button><br>
-        <button type="button" id="stopCaptureVideo" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px; display: none;" onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
-
-        <!--Used for volume meter-->
-        <button onclick="loadAudioContext()" data-external="true">Start Audio Sensing</button>
-
-        <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="100%" height="100%" hidden id="videoCall" style="display: none;"> <br>
-        <canvas class="canvas" id="overlay" />
+        
+        <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="100%" height="100%" hidden id="videoCall"
+            style="display: none;"> <br>
 
         <!--Used for volume meter-->
         <div hidden class="unclickable">
@@ -110,7 +131,7 @@
 
         // Canvas code
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             setGlobals();
             // capture video start will go here
         });
@@ -149,7 +170,7 @@
         function drawCancel() {
             // how to change transparency
             ctx.globalAlpha = 0.5
-                //ctx.drawImage(image, 10, 10);
+            //ctx.drawImage(image, 10, 10);
             ctx.globalAlpha = 1
         }
 
@@ -166,7 +187,7 @@
                 width: canvas.width,
                 height: canvas.height
             }
-            
+
             canvas = document.getElementById('overlay');
             faceapi.matchDimensions(canvas, displaySize);
 
@@ -190,7 +211,7 @@
             }
 
             const detections = await faceapi.detectAllFaces(input);
-            
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (var i = detections.length - 1; i >= 0; --i) {
                 var box = detections[i]._box;
