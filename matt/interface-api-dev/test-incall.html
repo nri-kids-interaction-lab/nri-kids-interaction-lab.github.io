@@ -4,8 +4,16 @@
   <script src="./test-incall_files/Ohmni-incall.js.download"></script>
   <script>
     var intervalGetVideo;
+    var resolutionWidth
+    var resolutionHeight
 
     // START of code for Matt's buttons
+
+    function updateResolution() {
+      resolutionWidth = document.getElementById("widthBox").value;
+      resolutionHeight = document.getElementById("heightBox").value;
+      console.log(resolutionWidth, resolutionHeight)      
+    }
 
     function sendJsonCmd(jsonData) {
       Ohmni.sendJsonCmd(jsonData);
@@ -68,7 +76,7 @@
 
     function captureVideo() {
       intervalGetVideo = setInterval(function() {
-        Ohmni.captureVideo();
+        Ohmni.captureVideo(resolutionWidth, resolutionHeight);
       }, 33);
       document.getElementById('videoCall').style.display = "";
       document.getElementById('stopCaptureVideo').style.display = "inline-block";
@@ -157,6 +165,14 @@
 <body onload="onLoad()">
   <div style="display: flex; flex-direction: row; justify-content: space-between">
     <div>
+
+      <form action="javascript:updateResolution()">
+        <p> Enter the resolution of image you'd like to request from the camera, then press "Submit". </p>
+        Width: <input type="number" id="widthBox" />
+        Height: <input type="number" id="heightBox" />
+        <input type="submit" value="Submit">
+      </form>
+
       <button type="button" id="captureAudio" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px" onclick="captureAudio();">captureAudio</button><br>
       <button type="button" id="stopCaptureAudio" data-external="true" class="button" style="padding:30px;margin:20px; margin-top: 60px;display: none;" onclick="stopCaptureAudio();">stopCaptureAudio</button><br>
       <textarea style="padding:30px;margin:20px; margin-top: 60px;display: none;" id="audioRawData"></textarea><br>
