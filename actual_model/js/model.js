@@ -3,6 +3,9 @@
 // coontains the logic of the actual model
 // ***
 
+// start audio recording
+var audioSensingWorker = new Worker('audio_record.js');
+
 // regard faceHeight and faceWidth as constant for now
 const actualFaceHeight = 0.225; // meter
 const actualFaceWidth = 0.14; // meter

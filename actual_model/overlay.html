@@ -95,7 +95,6 @@
 
     <!--SCRIPT-->
     <script>
-        var audioSensingWorker = new Worker('/js/audio_record.js');
         
         // while(1) {
         //     console.log(operatorVoicesLevel[operatorVoicesLevel.length-1]);
@@ -106,6 +105,7 @@
             for(var i = 0; i < 100; i++) {
                 console.log(i + " multi?");
             }
+            
         }
 
         // set up websocket connection
@@ -231,7 +231,7 @@
             for (var i = detections.length - 1; i >= 0; --i) {
                 var box = detections[i]._box;
                 var ad = adjustBox(box);
-                console.log(ad);
+                // console.log(ad);
                 // check whether the listener can hear the voice, if yes, change color of bounding box to green
                 var color = "#FF0000"; // default to red, cannot hear
                 if(applyVoiceModel(box._height)) {
