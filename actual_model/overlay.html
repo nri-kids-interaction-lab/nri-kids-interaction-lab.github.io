@@ -65,6 +65,7 @@
             <img src="" id="videoCall" style="display: none;"> <br>
             <!-- audio sensing button -->
             <button onclick="loadAudioContext()" data-external="true">Start Audio Sensing</button>
+            <button onclick="test()"></button>
         </div>
     </div>
 
@@ -94,6 +95,14 @@
 
     <!--SCRIPT-->
     <script>
+
+        async function test() {
+            for(var i = 0; i < 100; i++) {
+                console.log(i + " multi?");
+            }
+            
+        }
+
         // set up websocket connection
         setUpWebSocket();
 
@@ -217,7 +226,7 @@
             for (var i = detections.length - 1; i >= 0; --i) {
                 var box = detections[i]._box;
                 var ad = adjustBox(box);
-                
+                console.log(ad);
                 // check whether the listener can hear the voice, if yes, change color of bounding box to green
                 var color = "#FF0000"; // default to red, cannot hear
                 if(applyVoiceModel(box._height)) {

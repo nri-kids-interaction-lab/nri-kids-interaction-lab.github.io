@@ -78,43 +78,77 @@ function gotStream(stream) {
     lastAlpha = 0;
 
     // kick off the visual updating
-    drawLoop();
+    // drawLoop();
+
+    // kick off speaker level updating
+    updateSpeakerLevel();
 }
 
 function lerp(a, b, f) {
     return a + f * (b - a);
 }
 
-function drawLoop(time) {
-    // clear the background
-    ctx.canvas.width = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
+// function drawLoop(time) {
+//     // clear the background
+//     ctx.canvas.width = window.innerWidth;
+//     ctx.canvas.height = window.innerHeight;
 
-    // check if we're currently clipping
-    //meter.checkClipping()
+//     // check if we're currently clipping
+//     //meter.checkClipping()
 
 
-    // volumechange
-    // TODO, make this into an ellipse
-    // big circle constant radius
-    var slider1 = document.getElementById("myRange");
-    var slider2 = document.getElementById("myRange2");
-    var slider3 = document.getElementById("myRange3");
-    var slider4 = document.getElementById("myRange4");
+//     // volumechange
+//     // TODO, make this into an ellipse
+//     // big circle constant radius
+//     var slider1 = document.getElementById("myRange");
+//     var slider2 = document.getElementById("myRange2");
+//     var slider3 = document.getElementById("myRange3");
+//     var slider4 = document.getElementById("myRange4");
 
-    lastAlpha = meter.volume > slider1.value ?
-        lerp(lastAlpha, meter.volume, slider2.value) :
-        lerp(lastAlpha, 0, slider2.value);
+//     lastAlpha = meter.volume > slider1.value ?
+//         lerp(lastAlpha, meter.volume, slider2.value) :
+//         lerp(lastAlpha, 0, slider2.value);
 
-    volumeRadiusChange = meter.volume > slider1.value ?
-        lerp(volumeRadiusChange, meter.volume * slider4.value, slider3.value) :
-        lerp(volumeRadiusChange, 0, slider3.value);
+//     volumeRadiusChange = meter.volume > slider1.value ?
+//         lerp(volumeRadiusChange, meter.volume * slider4.value, slider3.value) :
+//         lerp(volumeRadiusChange, 0, slider3.value);
 
-    ctx.globalAlpha = lastAlpha;
+//     ctx.globalAlpha = lastAlpha;
 
-    //console.log(slider1.value, slider2.value, slider3.value, slider4.value);
-    // console.log(meter.volume);
+//     //console.log(slider1.value, slider2.value, slider3.value, slider4.value);
+//     // console.log(meter.volume);
 
+//     // console.log(operatorVoicesLevel);
+//     var fullScreenRadius = Math.min(window.innerWidth / 2.0, window.innerHeight / 2.0);
+//     var circleRadius = fullScreenRadius - volumeRadiusChange;
+//     var grd = ctx.createRadialGradient(
+//         window.innerWidth / 2.0, // small x 
+//         window.innerHeight / 2.0, // small y 
+//         window.innerHeight / 2.0, // small r
+//         window.innerWidth / 2.0, // large x
+//         window.innerHeight / 2.0, // large y
+//         window.innerHeight // large r
+//     );
+
+
+//     grd.addColorStop(0, "blue");
+//     grd.addColorStop(1, "red");
+
+//     ctx.fillStyle = grd;
+
+//     ctx.beginPath();
+//     ctx.arc(window.innerWidth / 2.0, window.innerHeight / 2.0, circleRadius, 0, 2 * Math.PI);
+//     ctx.rect(window.innerWidth, 0, -window.innerWidth, window.innerHeight);
+//     ctx.fill();
+
+
+
+
+//     // set up the next visual callback
+//     rafID = window.requestAnimationFrame(drawLoop);
+// }
+
+function updateSpeakerLevel(time) {
     // push measured volume to the array along with the timestamp
     operatorVoicesLevel.push({
         "time": getTimeMili(),
@@ -126,34 +160,10 @@ function drawLoop(time) {
         operatorVoicesLevel.shift();
     }
 
-    // console.log(operatorVoicesLevel);
-    var fullScreenRadius = Math.min(window.innerWidth / 2.0, window.innerHeight / 2.0);
-    var circleRadius = fullScreenRadius - volumeRadiusChange;
-    var grd = ctx.createRadialGradient(
-        window.innerWidth / 2.0, // small x 
-        window.innerHeight / 2.0, // small y 
-        window.innerHeight / 2.0, // small r
-        window.innerWidth / 2.0, // large x
-        window.innerHeight / 2.0, // large y
-        window.innerHeight // large r
-    );
+    console.log(operatorVoicesLevel[operatorVoicesLevel.length - 1]);
 
+    rafID = window.requestAnimationFrame(updateSpeakerLevel);
 
-    grd.addColorStop(0, "blue");
-    grd.addColorStop(1, "red");
-
-    ctx.fillStyle = grd;
-
-    ctx.beginPath();
-    ctx.arc(window.innerWidth / 2.0, window.innerHeight / 2.0, circleRadius, 0, 2 * Math.PI);
-    ctx.rect(window.innerWidth, 0, -window.innerWidth, window.innerHeight);
-    ctx.fill();
-
-
-
-
-    // set up the next visual callback
-    rafID = window.requestAnimationFrame(drawLoop);
 }
 
 function getTimeMili() {
