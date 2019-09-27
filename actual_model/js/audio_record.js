@@ -160,7 +160,7 @@ function updateSpeakerLevel(time) {
         operatorVoicesLevel.shift();
     }
 
-    console.log(operatorVoicesLevel[operatorVoicesLevel.length - 1]);
+    // console.log(operatorVoicesLevel[operatorVoicesLevel.length - 1]);
 
     rafID = window.requestAnimationFrame(updateSpeakerLevel);
 
