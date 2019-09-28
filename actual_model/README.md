@@ -33,17 +33,17 @@ The main model code is inside `js/model.js`. It computes the speakers output and
 # TO DO
 * Yulun: make the ambient noise filter ignore zeros! And do window size of 20s. And use median instead of mean.
 
-* Matt: try drawing icons
-* Matt: the distance=f(face) equation will need adjustment once we update the captureVideo(resolution). 
+- [ ] Matt: try drawing icons
+- [ ] Matt: the distance=f(face) equation will need adjustment once we update the captureVideo(resolution). 
 
-* Tom: working on getting the face detector to stop blocking other stuff, thereby causing a stutter (lag). Line 175 of facetry.html.
-* Tom: will resolve the positioning stuff -- he can do this very quickly; don't worry about it.
-* Tom: confirm whether Yulun missed your updated stuff in tom/facetry.html, like the JS code at the bottom. Fix it, please.
+- [ ] Tom: working on getting the face detector to stop blocking other stuff, thereby causing a stutter (lag). Line 175 of facetry.html.
+- [ ] Tom: will resolve the positioning stuff -- he can do this very quickly; don't worry about it.
+- [x] Tom: confirm whether Yulun missed your updated stuff in tom/facetry.html, like the JS code at the bottom. Fix it, please.
 
-* Someone: figure out why sometimes the "speaker output" in the console is stuck at like -70dB, but other times it's fine and fluctuates with my voice from maybe 20dB to 60dB. 
-* Someone: check if 1s is a good smoothing window size for the operator voice.
+- [ ] Someone: figure out why sometimes the "speaker output" in the console is stuck at like -70dB, but other times it's fine and fluctuates with my voice from maybe 20dB to 60dB. 
+- [ ] Someone: check if 1s is a good smoothing window size for the operator voice.
 
-* Figure out the maximum resolution of the camera. Matt has e-mailed Ohmni about this.
+- [ ] Figure out the maximum resolution of the camera. Matt has e-mailed Ohmni about this.
 
 
 NOTES
