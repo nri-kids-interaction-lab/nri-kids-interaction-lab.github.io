@@ -30,7 +30,25 @@ Note that measurements of volume meter and ambient noise level are smoothed. The
 
 The main model code is inside `js/model.js`. It computes the speakers output and compares it to a learned threshold. If the speakers output is larger than the threshold, the listener is predicted to be able to hear the operator's voice, which case the box around the listener would be green, else red.
 
-# TODO
-1. Find optimal hyperparameters such as smoothing constant.
-2. Shift face detector to backend if possible. Currently the face detector runs on the browser and taking a lot of computation power from the user.
-3. Improve the model itself.
+# TO DO
+* Yulun: make the ambient noise filter ignore zeros! And do window size of 20s. And use median instead of mean.
+
+* Matt: try drawing icons
+* Matt: the distance=f(face) equation will need adjustment once we update the captureVideo(resolution). 
+
+* Tom: working on getting the face detector to stop blocking other stuff, thereby causing a stutter (lag). Line 175 of facetry.html.
+* Tom: will resolve the positioning stuff -- he can do this very quickly; don't worry about it.
+* Tom: confirm whether Yulun missed your updated stuff in tom/facetry.html, like the JS code at the bottom. Fix it, please.
+
+* Someone: figure out why sometimes the "speaker output" in the console is stuck at like -70dB, but other times it's fine and fluctuates with my voice from maybe 20dB to 60dB. 
+* Someone: check if 1s is a good smoothing window size for the operator voice.
+
+* Figure out the maximum resolution of the camera. Matt has e-mailed Ohmni about this.
+
+
+NOTES
+* The smoothers for operator voice and ambient noise could be made more efficient...probably not a huge deal, though.
+* Regarding the webcam resolution:
+	* Stream display in the web app seems to NOT stretch. It's only slightly wider than tall, maybe W = 1.33H
+	* When we call captureVideo(resWidth, resHeight) it obeys us! So captureVideo(1, 100) compresses the image down to a 1x100 strip, which then gets stretched horizontally when we ask for it to display as a 200x200, so it ends up as a bunch of horizontal stripes.
+	* I played around with a few resolutions -- seems it's somewhere between 640x480 and like 1000xWhatever. Gonna ask OhmniLabs.
