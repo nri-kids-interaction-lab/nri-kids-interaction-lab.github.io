@@ -4,7 +4,7 @@
 // ***
 
 // start audio recording
-var audioSensingWorker = new Worker('audio_record.js');
+var audioSensingWorker = new Worker('js/audio_record.js');
 
 // regard faceHeight and faceWidth as constant for now
 const actualFaceHeight = 0.225; // meter
