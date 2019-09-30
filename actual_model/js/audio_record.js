@@ -157,7 +157,7 @@ function updateSpeakerLevel(time) {
         "volume": meter.volume
     });
 
-    console.log(meter.volume);
+    // console.log(meter.volume);
     // delete all measures that are some time interval ago.
     while (operatorVoicesLevel[operatorVoicesLevel.length - 1].time - operatorVoicesLevel[0].time > smoothConstOperator) {
         operatorVoicesLevel.shift();
