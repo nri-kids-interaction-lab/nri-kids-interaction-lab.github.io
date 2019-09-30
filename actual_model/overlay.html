@@ -120,6 +120,10 @@
             })
         }
         function captureVideo() {
+            // start audio recording
+            startAudioRecorder(); 
+
+            // face detector
             loopResultsReady = false;
             Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
             document.getElementById('videoCall').style.display = "none";
