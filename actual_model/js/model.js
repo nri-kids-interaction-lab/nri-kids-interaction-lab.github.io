@@ -23,6 +23,23 @@ function getBotVolumeCb(value) {
     botV = value;
 }
 
+function takeMedian(array) {
+    if (array.length == 0) {
+        return 0;
+    }
+
+    const mid1 = array[array.length / 2 - 1];
+    const mid2 = array[array.length / 2];
+
+    if (array.length % 2 == 0) {
+        return (mid1 + mid2) / 2;
+    }
+    else if (array.length % 2 != 0) {
+        return mid2;
+    }
+}
+
+
 function obtainSpeakerOutput() {
     // equation:
     // speaker_output = 3.4 * bot_volume + 8 * ln(smoothed_input_volume) + 58
@@ -65,21 +82,5 @@ function applyVoiceModel(pixelFaceHeight) {
     }
     else {
         return false;
-    }
-}
-
-function takeMedian(array) {
-    if (array.length == 0) {
-        return 0;
-    }
-
-    const mid1 = array[array.length / 2 - 1];
-    const mid2 = array[array.length / 2];
-
-    if (array.length % 2 == 0) {
-        return (mid1 + mid2) / 2;
-    }
-    else if (array.length % 2 != 0) {
-        return mid2;
     }
 }
