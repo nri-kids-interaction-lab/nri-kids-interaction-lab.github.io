@@ -5,7 +5,7 @@
 // ***
 
 const ambientNoiseLevels = []; // stores data from the Android app
-const smoothConstAmbient = 1000;
+const smoothConstAmbient = 1000 * 20; // 20 seconds
 
 function setUpWebSocket() {
     const socketProtocol = (window.location.protocol === 'https:' ? 'wss:' : 'ws:')
@@ -24,8 +24,18 @@ function setUpWebSocket() {
 
         // if it the message is the establishment message, process it
         // console.log(message)
-        if (message.message != "Connection to overlay established") {
+        /*
+        format of message from Android:
+        {
+            time: 1569863893984,
+            noiseLevel: 137.22881355932202
+        }
+
+        */
+       // make sure message is not the establishment message and value is not zero (ambient recorder returns zero when operator is speaking)
+        if (message.message != "Connection to overlay established" && message.message.noiseLevel != 0) {
             ambientNoiseLevels.push(message);
+            console.log(message);
             // remove all messages that are 1 second eslier than the current one, delete it
             while (ambientNoiseLevels[ambientNoiseLevels.length - 1].time - ambientNoiseLevels[0].time > smoothConstAmbient) {
                 ambientNoiseLevels.shift();

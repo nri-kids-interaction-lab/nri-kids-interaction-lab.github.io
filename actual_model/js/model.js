@@ -9,7 +9,7 @@ var audioSensingWorker = new Worker('js/audio_record.js');
 // regard faceHeight and faceWidth as constant for now
 const actualFaceHeight = 0.225; // meter
 const actualFaceWidth = 0.14; // meter
-var botV = 0;
+var botV = 0; // bot volume
 
 function setBotVolume(value) {
     // Value must be from 1 to 11.
@@ -35,42 +35,30 @@ function obtainSpeakerOutput() {
     const eps = 1e-8; // small constant added to the operator voice level to avoid outputing neg inf from Math.log
 
     // obtain smoothed input volume of the speaker
-    var operatorVoicesLevelMean = 0;
-    for (var i = 0; i < operatorVoicesLevel.length; i++) {
-        operatorVoicesLevelMean += operatorVoicesLevel[i].volume;
-        // console.log(operatorVoicesLevelMean);
-    }
-    if(operatorVoicesLevel.length > 0) {
-        operatorVoicesLevelMean /= operatorVoicesLevel.length;
-    }
+    var operatorVoicesLevelMedian = takeMedian(operatorVoicesLevel);
+
     // console.log(operatorVoicesLevel);
-    // console.log("mean: " + operatorVoicesLevelMean);
+    // console.log("median: " + operatorVoicesLevelMedian);
     // apply the equation and return the result
-    const speakerOutput = 3.4 * botV + 8 * Math.log(operatorVoicesLevelMean + eps) + 58;
+    const speakerOutput = 3.4 * botV + 8 * Math.log(operatorVoicesLevelMedian + eps) + 58;
     return speakerOutput;
 }
 
 function applyVoiceModel(pixelFaceHeight) {
     const speakerOutput = obtainSpeakerOutput();
     console.log("speaker output: " + speakerOutput);
+
     // obtain the ambient average ambient noise
-    var ambientNoiseMean = 0;
-    console.log("empty ambient: " + ambientNoiseLevels);
-    for(var i=0; i<ambientNoiseLevels.length; i++) {
-        ambientNoiseMean += ambientNoiseLevels[i].noiseLevel;
-    }
-    if(ambientNoiseLevels.length > 0) {
-        ambientNoiseMean /= ambientNoiseLevels.length;
-    }
-    console.log("ambient mean: " + ambientNoiseMean);
-    
+    var ambientNoiseMedian = takeMedian(ambientNoiseLevels);
+    console.log("ambient median: " + ambientNoiseMedian);
+
     // obtain the distance to the face d = .5 * .225 / tan(.5 * h_pix *  0.0090175)
     const distanceToFace = 0.5 * 0.225 / Math.tan(0.5 * pixelFaceHeight * 0.0090175)
     console.log("distance to face: " + distanceToFace);
 
-    // obtain the threshold: min_intelligible_mumbling_volume[dB] = 
-    // 0.01168*smoothed_ambient_volume + 6.90635*ln(distance_in_meters) + 49.40575
-    const minIntelligibleMumblingVolume = 0.01168*ambientNoiseMean + 6.90635*Math.log(distanceToFace) + 49.40575;
+    // obtain the threshold:
+    // min_intelligible_mumbling_volume(dB) = 0.01168*smoothed_ambient_volume + 6.90635*ln(distance_in_meters) + 49.40575
+    const minIntelligibleMumblingVolume = 0.01168*ambientNoiseMedian + 6.90635*Math.log(distanceToFace) + 49.40575;
     console.log("threshold: " + minIntelligibleMumblingVolume);
 
     // if the speaker output is above threshold, return true (the listener can hear the speaker, else return false)
@@ -79,5 +67,21 @@ function applyVoiceModel(pixelFaceHeight) {
     }
     else {
         return false;
+    }
+}
+
+function takeMedian(array) {
+    if(array.length == 0) {
+        return 0;
+    }
+
+    const mid1 = array[array.length/2 - 1];
+    const mid2 = array[array.length/2];
+
+    if(array.length % 2 == 0) {
+        return (mid1 + mid2)/2;
+    }
+    else if(array.length % 2 != 0) {
+        return mid2;
     }
 }
