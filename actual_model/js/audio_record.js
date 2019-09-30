@@ -33,6 +33,8 @@ function loadAudioContext() {
     // ctx = document.getElementById("meter").getContext("2d");
 
     // monkeypatch Web Audio
+    console.log(self);
+    window = self;
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
     // grab an audio context
