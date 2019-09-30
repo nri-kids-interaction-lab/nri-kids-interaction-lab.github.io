@@ -28,7 +28,7 @@ var operatorVoicesLevel = []; // store smoothed volume of robot operator
 const smoothConstOperator = 1000 * 20; // smoothing constant, in miliseconds
 
 
-async function loadAudioContext() {
+function loadAudioContext() {
     // grab our canvas
     // ctx = document.getElementById("meter").getContext("2d");
 
@@ -156,11 +156,13 @@ function updateSpeakerLevel(time) {
         "time": getTimeMili(),
         "volume": meter.volume
     });
-    // console.log(meter.volume);
+
+    console.log(meter.volume);
     // delete all measures that are some time interval ago.
     while (operatorVoicesLevel[operatorVoicesLevel.length - 1].time - operatorVoicesLevel[0].time > smoothConstOperator) {
         operatorVoicesLevel.shift();
     }
+    // console.log(operatorVoicesLevel);
 
     // console.log(operatorVoicesLevel[operatorVoicesLevel.length - 1]);
     rafID = window.requestAnimationFrame(updateSpeakerLevel);

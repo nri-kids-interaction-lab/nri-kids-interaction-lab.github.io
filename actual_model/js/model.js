@@ -31,6 +31,10 @@ function takeMedian(array_) {
     const mid1 = array_[array_.length / 2 - 1];
     const mid2 = array_[array_.length / 2];
 
+    console.log(array_);
+    console.log(mid1);
+    console.log(mid2)
+
     if (array_.length % 2 == 0) {
         return (mid1 + mid2) / 2;
     }
