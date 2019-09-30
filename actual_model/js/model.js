@@ -28,8 +28,8 @@ function takeMedian(array_) {
         return 0;
     }
 
-    const mid1 = array_[array_.length / 2 - 1];
-    const mid2 = array_[array_.length / 2];
+    const mid1 = array_[Math.floor((array_.length) / 2) - 1];
+    const mid2 = array_[Math.floor((array_.length) / 2)];
 
     console.log(array_);
     console.log(array_.length);
