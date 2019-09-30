@@ -31,7 +31,7 @@ Note that measurements of volume meter and ambient noise level are smoothed. The
 The main model code is inside `js/model.js`. It computes the speakers output and compares it to a learned threshold. If the speakers output is larger than the threshold, the listener is predicted to be able to hear the operator's voice, which case the box around the listener would be green, else red.
 
 # TO DO
-* Yulun: make the ambient noise filter ignore zeros! And do window size of 20s. And use median instead of mean.
+- [ ] Yulun: make the ambient noise filter ignore zeros! And do window size of 20s. And use median instead of mean.
 
 - [ ] Matt: try drawing icons
 - [ ] Matt: the distance=f(face) equation will need adjustment once we update the captureVideo(resolution). 
