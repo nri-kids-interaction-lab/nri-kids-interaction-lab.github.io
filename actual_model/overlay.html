@@ -208,10 +208,14 @@
                 var box = detections[i]._box;
                 var ad = adjustBox(box);
                 var color = "#FF0000"
+
+                // ************ temporary model logic **************
                 if(applyVoiceModel(detections[i]._height)) {
                     color = "#008000";
                 }
                 drawSquare(ad[0], ad[1], ad[2], ad[3], 1, color);
+                // ************ temporary model logic **************
+
                 console.log(box);
             }
             if (detections.length == 0) {
