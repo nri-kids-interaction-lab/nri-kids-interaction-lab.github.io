@@ -54,7 +54,7 @@ function obtainSpeakerOutput() {
     const eps = 1e-8; // small constant added to the operator voice level to avoid outputing neg inf from Math.log
 
     // obtain smoothed input volume of the speaker
-    var operatorVoicesLevelMedian = (takeMedian(operatorVoicesLevel)).volume;
+    var operatorVoicesLevelMedian = (takeMedian(operatorVoicesLevel.slice())).volume;
     console.log(operatorVoicesLevelMedian);
 
     // console.log(operatorVoicesLevel);
@@ -69,7 +69,7 @@ function applyVoiceModel(pixelFaceHeight) {
     console.log("speaker output: " + speakerOutput);
 
     // obtain the ambient average ambient noise
-    var ambientNoiseMedian = (takeMedian(ambientNoiseLevels)).noiseLevel;
+    var ambientNoiseMedian = (takeMedian(ambientNoiseLevels.slice())).noiseLevel;
     console.log("ambient median: " + ambientNoiseMedian);
 
     // obtain the distance to the face d = .5 * .225 / tan(.5 * h_pix *  0.0090175)
