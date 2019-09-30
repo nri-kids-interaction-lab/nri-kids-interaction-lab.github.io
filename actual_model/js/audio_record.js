@@ -25,7 +25,7 @@ var HEIGHT = 50;
 var rafID = null;
 
 var operatorVoicesLevel = []; // store smoothed volume of robot operator
-const smoothConstOperator = 1000; // smoothing constant, in miliseconds
+const smoothConstOperator = 1000 * 20; // smoothing constant, in miliseconds
 
 
 function loadAudioContext() {
