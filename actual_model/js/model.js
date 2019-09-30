@@ -3,8 +3,6 @@
 // coontains the logic of the actual model
 // ***
 
-// start audio recording
-var audioSensingWorker = new Worker('js/audio_record.js');
 
 // regard faceHeight and faceWidth as constant for now
 const actualFaceHeight = 0.225; // meter
@@ -58,11 +56,11 @@ function applyVoiceModel(pixelFaceHeight) {
 
     // obtain the threshold:
     // min_intelligible_mumbling_volume(dB) = 0.01168*smoothed_ambient_volume + 6.90635*ln(distance_in_meters) + 49.40575
-    const minIntelligibleMumblingVolume = 0.01168*ambientNoiseMedian + 6.90635*Math.log(distanceToFace) + 49.40575;
+    const minIntelligibleMumblingVolume = 0.01168 * ambientNoiseMedian + 6.90635 * Math.log(distanceToFace) + 49.40575;
     console.log("threshold: " + minIntelligibleMumblingVolume);
 
     // if the speaker output is above threshold, return true (the listener can hear the speaker, else return false)
-    if(speakerOutput >= minIntelligibleMumblingVolume) {
+    if (speakerOutput >= minIntelligibleMumblingVolume) {
         return true;
     }
     else {
@@ -71,17 +69,17 @@ function applyVoiceModel(pixelFaceHeight) {
 }
 
 function takeMedian(array) {
-    if(array.length == 0) {
+    if (array.length == 0) {
         return 0;
     }
 
-    const mid1 = array[array.length/2 - 1];
-    const mid2 = array[array.length/2];
+    const mid1 = array[array.length / 2 - 1];
+    const mid2 = array[array.length / 2];
 
-    if(array.length % 2 == 0) {
-        return (mid1 + mid2)/2;
+    if (array.length % 2 == 0) {
+        return (mid1 + mid2) / 2;
     }
-    else if(array.length % 2 != 0) {
+    else if (array.length % 2 != 0) {
         return mid2;
     }
 }

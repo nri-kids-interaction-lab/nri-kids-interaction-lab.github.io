@@ -96,6 +96,12 @@
         // set up websocket connection
         setUpWebSocket();
 
+        // // start audio recording
+        // var audioSensingWorker = new Worker('js/audio_record.js');
+        // audioSensingWorker.onmessage = function (event) {
+        //     console.log(event.data);
+        // };
+
         console.log("finished set up websocket")
 
         // ohmni code

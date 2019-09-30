@@ -33,8 +33,8 @@ function loadAudioContext() {
     // ctx = document.getElementById("meter").getContext("2d");
 
     // monkeypatch Web Audio
-    console.log(self);
-    window = self;
+    // console.log(self);
+    // window = self;
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
     // grab an audio context
@@ -156,7 +156,7 @@ function updateSpeakerLevel(time) {
         "time": getTimeMili(),
         "volume": meter.volume
     });
-
+    console.log(meter.volume);
     // delete all measures that are some time interval ago.
     while (operatorVoicesLevel[operatorVoicesLevel.length - 1].time - operatorVoicesLevel[0].time > smoothConstOperator) {
         operatorVoicesLevel.shift();
@@ -172,4 +172,9 @@ function getTimeMili() {
 }
 
 // runs audio recorder in another thread
-loadAudioContext();
+function startAudioRecorder(){
+    return new Promise(function(resolve, reject) {
+        loadAudioContext();
+    });
+}
+startAudioRecorder();
