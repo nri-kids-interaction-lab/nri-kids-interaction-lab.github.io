@@ -23,18 +23,18 @@ function getBotVolumeCb(value) {
     botV = value;
 }
 
-function takeMedian(array) {
-    if (array.length == 0) {
+function takeMedian(array_) {
+    if (array_.length == 0) {
         return 0;
     }
 
-    const mid1 = array[array.length / 2 - 1];
-    const mid2 = array[array.length / 2];
+    const mid1 = array_[array_.length / 2 - 1];
+    const mid2 = array_[array_.length / 2];
 
-    if (array.length % 2 == 0) {
+    if (array_.length % 2 == 0) {
         return (mid1 + mid2) / 2;
     }
-    else if (array.length % 2 != 0) {
+    else if (array_.length % 2 != 0) {
         return mid2;
     }
 }
@@ -50,7 +50,8 @@ function obtainSpeakerOutput() {
     const eps = 1e-8; // small constant added to the operator voice level to avoid outputing neg inf from Math.log
 
     // obtain smoothed input volume of the speaker
-    var operatorVoicesLevelMedian = takeMedian(operatorVoicesLevel).volume;
+    var operatorVoicesLevelMedian = (takeMedian(operatorVoicesLevel)).volume;
+    console.log(operatorVoicesLevelMedian);
 
     // console.log(operatorVoicesLevel);
     // console.log("median: " + operatorVoicesLevelMedian);
@@ -64,7 +65,7 @@ function applyVoiceModel(pixelFaceHeight) {
     console.log("speaker output: " + speakerOutput);
 
     // obtain the ambient average ambient noise
-    var ambientNoiseMedian = takeMedian(ambientNoiseLevels).noiseLevel;
+    var ambientNoiseMedian = (takeMedian(ambientNoiseLevels)).noiseLevel;
     console.log("ambient median: " + ambientNoiseMedian);
 
     // obtain the distance to the face d = .5 * .225 / tan(.5 * h_pix *  0.0090175)
