@@ -25,7 +25,7 @@ var HEIGHT = 50;
 var rafID = null;
 
 var operatorVoicesLevel = []; // store smoothed volume of robot operator
-const smoothConstOperator = 1000 * 20; // smoothing constant, in miliseconds
+const smoothConstOperator = 1000 * 1.5; // smoothing constant, in miliseconds
 
 
 function loadAudioContext() {
@@ -152,12 +152,13 @@ function lerp(a, b, f) {
 
 function updateSpeakerLevel(time) {
     // push measured volume to the array along with the timestamp
-    operatorVoicesLevel.push({
+    const e = {
         "time": getTimeMili(),
         "volume": meter.volume
-    });
+    }
+    operatorVoicesLevel.push(e);
 
-    // console.log(meter.volume);
+    console.log(e.time + " " + e.volume);
     // delete all measures that are some time interval ago.
     while (operatorVoicesLevel[operatorVoicesLevel.length - 1].time - operatorVoicesLevel[0].time > smoothConstOperator) {
         operatorVoicesLevel.shift();

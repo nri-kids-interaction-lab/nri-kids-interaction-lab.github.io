@@ -24,6 +24,7 @@ function getBotVolumeCb(value) {
 }
 
 function takeMedianOperator(array_) {
+    array_.sort(function(a, b){return a-b});
     if (array_.length == 0) {
         return 0;
     }
@@ -40,6 +41,7 @@ function takeMedianOperator(array_) {
 }
 
 function takeMedianAmbient(array_) {
+    array_.sort(function(a, b){return a-b});
     if (array_.length == 0) {
         return 0;
     }

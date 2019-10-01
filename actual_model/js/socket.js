@@ -5,7 +5,7 @@
 // ***
 
 const ambientNoiseLevels = []; // stores data from the Android app
-const smoothConstAmbient = 1000 * 20; // 20 seconds
+const smoothConstAmbient = 1000 * 1.5; // 20 seconds
 
 function setUpWebSocket() {
     const socketProtocol = (window.location.protocol === 'https:' ? 'wss:' : 'ws:')
