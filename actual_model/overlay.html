@@ -118,7 +118,9 @@
             // face detector
             modelLoaded = false;
             Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
-            setInterval(drawLoop(), 1000);
+            setInterval(function() {
+                drawLoop();
+            }, 1000);
 
             document.getElementById('stopCaptureVideo').style.display = "inline-block";
             document.getElementById('startCaptureVideo').style.display = "none";
