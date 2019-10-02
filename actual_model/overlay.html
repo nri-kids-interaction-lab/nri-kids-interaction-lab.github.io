@@ -117,9 +117,14 @@
 
             // face detector
             modelLoaded = false;
-            Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
+            setInterval(function() {
+                Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);;
+            }, 750);
             setInterval(function() {
                 drawLoop();
+            }, 500);
+            setInterval(function() {
+                runFaceDetection();
             }, 1000);
 
             document.getElementById('stopCaptureVideo').style.display = "inline-block";
@@ -134,11 +139,8 @@
             return new Promise(resolve => setTimeout(resolve, milliseconds))
         }
 
-        async function captureVideoCb(imageBase64) {
+        function captureVideoCb(imageBase64) {
             document.getElementById("videoCall").src = imageBase64;
-            sleep(1000).then(() => {
-                Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
-            });
         }
         // Canvas code
         function getCenterFromWH(width, height) {
@@ -175,7 +177,7 @@
             modelLoaded = true;
         }
 
-        async function loopResults() {
+        async function runFaceDetection() {
             if (!modelLoaded) {
                 loadModel();
                 return;
