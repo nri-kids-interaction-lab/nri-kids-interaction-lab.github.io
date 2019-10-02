@@ -178,6 +178,7 @@
         async function runFaceDetection() {
             if (!modelLoaded) {
                 loadModel();
+                runFaceDetection();
                 return;
             }
             console.log("looping results");
