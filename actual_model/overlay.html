@@ -177,7 +177,7 @@
 
         async function runFaceDetection() {
             if (!modelLoaded) {
-                loadModel();
+                await loadModel();
                 runFaceDetection();
                 return;
             }
