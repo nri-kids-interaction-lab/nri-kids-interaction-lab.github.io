@@ -55,7 +55,6 @@
     <div class="container">
         <canvas class="canvas" id="overlay"></canvas>
         <div class="buttons">
-            <button id="loopResults" onclick="loopResultsDebug()">Try Camera Frame</button>
             <button type="button" id="startCaptureVideo" data-external="true" class="button"
                 style="padding:30px;margin:20px; margin-top: 60px"
                 onclick="captureVideo();">startCaptureVideo</button><br>
@@ -105,11 +104,6 @@
         console.log("finished set up websocket")
 
         // ohmni code
-
-        function loopResultsDebug() {
-            var p = parent.document.getElementById("main-video-stream");
-            console.log(p);
-        }
         function getImageDimensions(file) {
             return new Promise(function (resolved, rejected) {
                 var i = new Image()
@@ -126,13 +120,11 @@
             // face detector
             loopResultsReady = false;
             Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
-            document.getElementById('videoCall').style.display = "none";
             document.getElementById('stopCaptureVideo').style.display = "inline-block";
             document.getElementById('startCaptureVideo').style.display = "none";
         }
 
         function stopCaptureVideo() {
-            document.getElementById('videoCall').style.display = "none";
             document.getElementById('startCaptureVideo').style.display = "inline-block";
             document.getElementById('stopCaptureVideo').style.display = "none";
         }
