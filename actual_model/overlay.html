@@ -119,13 +119,11 @@
             modelLoaded = false;
             setInterval(function() {
                 Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);;
-            }, 750);
+            }, 1000);
             setInterval(function() {
                 drawLoop();
             }, 500);
-            setInterval(function() {
-                runFaceDetection();
-            }, 1000);
+            runFaceDetection();
 
             document.getElementById('stopCaptureVideo').style.display = "inline-block";
             document.getElementById('startCaptureVideo').style.display = "none";
@@ -183,7 +181,8 @@
                 return;
             }
             console.log("looping results");
-            detections = faceapi.detectAllFaces(input);
+            detections = await faceapi.detectAllFaces(input);
+            runFaceDetection();
         }
 
         async function drawLoop(){
