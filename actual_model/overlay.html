@@ -93,33 +93,32 @@
     <!--SCRIPT-->
     <script>
         // set up websocket connection
-        setUpWebSocket();
 
-        // // start audio recording
-        // var audioSensingWorker = new Worker('js/audio_record.js');
-        // audioSensingWorker.onmessage = function (event) {
-        //     console.log(event.data);
-        // };
+        $(document).ready(function () {
+            setUpWebSocket();
+            console.log("finished set up websocket");
+            setGlobals();
+            console.log("finished set up globals");
+        });
 
-        console.log("finished set up websocket")
+        function setGlobals() {
+            canvas = document.getElementById('overlay');
+            ctx = canvas.getContext('2d');
+            volume_set = false;
+            videoCallBackWidth = 1920;
+            videoCallBackHeight = 1080;
+        }
 
         // ohmni code
-        function getImageDimensions(file) {
-            return new Promise(function (resolved, rejected) {
-                var i = new Image()
-                i.onload = function () {
-                    resolved({ w: i.width, h: i.height })
-                };
-                i.src = file
-            })
-        }
         function captureVideo() {
             // start audio recording
             startAudioRecorder(); 
 
             // face detector
-            loopResultsReady = false;
+            modelLoaded = false;
             Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
+            setInterval(drawLoop(), 1000);
+
             document.getElementById('stopCaptureVideo').style.display = "inline-block";
             document.getElementById('startCaptureVideo').style.display = "none";
         }
@@ -131,26 +130,14 @@
         const sleep = (milliseconds) => {
             return new Promise(resolve => setTimeout(resolve, milliseconds))
         }
+
         async function captureVideoCb(imageBase64) {
             document.getElementById("videoCall").src = imageBase64;
-            await loopResults();
             sleep(1000).then(() => {
                 Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
             });
         }
         // Canvas code
-        $(document).ready(function () {
-            setGlobals();
-            // capture video start will go here
-        });
-
-        function setGlobals() {
-            canvas = document.getElementById('overlay');
-            ctx = canvas.getContext('2d');
-            volume_set = false;
-            videoCallBackWidth = 1173;
-            videoCallBackHeight = 939; // YULUN HERE
-        }
         function getCenterFromWH(width, height) {
             return [(canvas.width - width) / 2.0, (canvas.height - height) / 2.0 - 200]
         }
@@ -171,38 +158,33 @@
             ctx.rect(x, y, w, h);
             ctx.stroke();
         }
-        function drawCancel() {
-            // how to change transparency
-            ctx.globalAlpha = 0.5
-            //ctx.drawImage(image, 10, 10);
-            ctx.globalAlpha = 1
-        }
-        async function onPlay(potato) {
+
+        async function loadModel() {
             const MODEL_URL = 'weights';
             console.log("model loading");
             await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
             console.log("model loaded");
+            
             input = document.getElementById('videoCall');
             displaySize = { width: canvas.width, height: canvas.height }
-            canvas = document.getElementById('overlay');
             faceapi.matchDimensions(canvas, displaySize);
             console.log("Face detection loaded, looping detection");
-            loopResultsReady = true;
-            input2 = document.getElementById("main-video-stream");
-            console.log("input2");
-            console.log(input2);
+            modelLoaded = true;
         }
+
         async function loopResults() {
-            if (!loopResultsReady) {
-                onPlay();
+            if (!modelLoaded) {
+                loadModel();
                 return;
             }
             console.log("looping results");
-            detections = await faceapi.detectAllFaces(input);
+            detections = faceapi.detectAllFaces(input);
+        }
+
+        async function drawLoop(){
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (var i = detections.length - 1; i >= 0; --i) {
-                var box = detections[i]._box;
-                var ad = adjustBox(box);
+                var ad = adjustBox(detections[i]._box);
                 var color = "#FF0000"
 
                 // ************ temporary model logic **************
