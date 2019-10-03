@@ -105,8 +105,8 @@
             canvas = document.getElementById('overlay');
             ctx = canvas.getContext('2d');
             volume_set = false;
-            videoCallBackWidth = 1920;
-            videoCallBackHeight = 1080;
+            videoCallBackWidth = 960;
+            videoCallBackHeight = 540;
             detections = [];
 
             img_circle = new Image();
@@ -114,6 +114,19 @@
 
             img_circle.src = "images/gray-circle.png";
             img_check.src = "images/green-check.jpg";
+
+            circ_loaded = false;
+            check_loaded = false;
+
+            img_circle.onload = function(){
+                circ_loaded = true;
+                console.log("circle img loaded");
+            }
+            img_check.onload = function(){
+                check_loaded = true;
+                console.log("check img loaded");
+            }
+
         }
 
         // ohmni code
@@ -194,6 +207,10 @@
         }
 
         function drawLoop(){
+            if(!circ_loaded || !check_loaded){
+                return;
+            }
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (var i = detections.length - 1; i >= 0; --i) {
                 var ad = adjustBox(detections[i]._box);
