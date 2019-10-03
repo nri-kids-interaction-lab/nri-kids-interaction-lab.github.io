@@ -186,7 +186,7 @@
             console.log("model loading");
             await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
             console.log("model loaded");
-            
+            canvas = document.getElementById('overlay');
             input = document.getElementById('videoCall');
             displaySize = { width: canvas.width, height: canvas.height }
             faceapi.matchDimensions(canvas, displaySize);
