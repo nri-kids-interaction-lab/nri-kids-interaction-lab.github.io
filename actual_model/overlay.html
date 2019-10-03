@@ -112,8 +112,8 @@
             img_circle = new Image();
             img_check = new Image();
 
-            img_circle.src = "images/gray-circle.png";
-            img_check.src = "images/green-check.jpg";
+            img_circle.src = "https://nri-kids-interaction-lab.github.io/actual_model/images/gray-circle.png";
+            img_check.src = "https://nri-kids-interaction-lab.github.io/actual_model/images/green-check.jpg";
 
             circ_loaded = false;
             check_loaded = false;
@@ -201,7 +201,7 @@
                 return;
             }
             console.log("looping results");
-            detections = await faceapi.detectAllFaces(input);
+            //detections = await faceapi.detectAllFaces(input);
             console.log(detections);
             runFaceDetection();
         }
