@@ -108,6 +108,7 @@
             videoCallBackWidth = 960;
             videoCallBackHeight = 540;
             detections = [];
+            options = new faceapi.SsdMobilenetv1Options({ minConfidence: 0.05, maxResults: 10 });
 
             img_circle = new Image();
             img_check = new Image();
@@ -203,7 +204,7 @@
             }
             if(img_set){
                 console.log("looping results");
-                detections = await faceapi.detectAllFaces(input);
+                detections = await faceapi.detectAllFaces(input, options);
                 console.log(detections);
             }
             await sleep(2000);
