@@ -32,8 +32,8 @@
             position: relative;
             z-index: 9;
             pointer-events: none;
-            width: 1173.75px;
-            height: 939px;
+            width: 1026px;
+            height: 821px;
             text-align: center;
         }
 
@@ -105,8 +105,8 @@
             canvas = document.getElementById('overlay');
             ctx = canvas.getContext('2d');
             volume_set = false;
-            videoCallBackWidth = 960;
-            videoCallBackHeight = 540;
+            videoCallBackWidth = 1026;
+            videoCallBackHeight = 821;
             detections = [];
             options = new faceapi.SsdMobilenetv1Options({ minConfidence: 0.3, maxResults: 10 });
 
