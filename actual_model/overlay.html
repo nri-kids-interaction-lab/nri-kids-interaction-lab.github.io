@@ -136,6 +136,7 @@
 
             // face detector
             modelLoaded = false;
+            img_set = false;
             setInterval(function() {
                 Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);;
             }, 1000);
@@ -158,6 +159,8 @@
 
         function captureVideoCb(imageBase64) {
             document.getElementById("videoCall").src = imageBase64;
+            img_set = true;
+            console.log("imageChanged");
         }
         // Canvas code
         function getCenterFromWH(width, height) {
@@ -198,10 +201,11 @@
             if (!modelLoaded) {
                 await loadModel();
             }
-
-            console.log("looping results");
-            detections = await faceapi.detectAllFaces(input);
-            console.log(detections);
+            if(img_set){
+                console.log("looping results");
+                detections = await faceapi.detectAllFaces(input);
+                console.log(detections);
+            }
             await sleep(2000);
             runFaceDetection();
         }
