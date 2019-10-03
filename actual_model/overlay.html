@@ -194,15 +194,20 @@
             modelLoaded = true;
         }
 
+
+        const sleep = (milliseconds) => {
+          return new Promise(resolve => setTimeout(resolve, milliseconds))
+        }
+
         async function runFaceDetection() {
             if (!modelLoaded) {
                 await loadModel();
-                runFaceDetection();
-                return;
             }
+            
             console.log("looping results");
             detections = await faceapi.detectAllFaces(input);
             console.log(detections);
+            await sleep(2000);
             runFaceDetection();
         }
 
