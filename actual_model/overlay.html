@@ -108,6 +108,12 @@
             videoCallBackWidth = 1920;
             videoCallBackHeight = 1080;
             detections = [];
+
+            img_circle = new Image();
+            img_check = new Image();
+
+            img_circle.src = "images/gray-circle.png";
+            img_check.src = "images/green-check.jpg";
         }
 
         // ohmni code
@@ -191,13 +197,17 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (var i = detections.length - 1; i >= 0; --i) {
                 var ad = adjustBox(detections[i]._box);
-                var color = "#FF0000"
+                //var color = "#FF0000"
 
                 // ************ temporary model logic **************
                 if(applyVoiceModel(box._height)) {
-                    color = "#008000";
+                  //  color = "#008000";
+                    ctx.drawImage(img_check,ad[0],ad[1],width:ad[2], height:ad[3]);
                 }
-                drawSquare(ad[0], ad[1], ad[2], ad[3], 1, color);
+                else{
+                    ctx.drawImage(img_circle, ad[0],ad[1],width:ad[2], height:ad[3]);
+                }
+                //drawSquare(ad[0], ad[1], ad[2], ad[3], 1, color);
                 // ************ temporary model logic **************
 
                 console.log(box);
@@ -206,6 +216,8 @@
                 console.log("No detections found")
             }
         }
+
+        // Returns [X,Y,W,H] adjusted
         function adjustBox(box) {
             var xfac = box._x / videoCallBackWidth * canvas.width;
             var yfac = box._y / videoCallBackHeight * canvas.height;
