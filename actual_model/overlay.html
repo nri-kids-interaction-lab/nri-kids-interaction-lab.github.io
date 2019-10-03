@@ -137,14 +137,11 @@
 
             // face detector
             modelLoaded = false;
-            img_set = false;
-            setInterval(function() {
-                Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);;
-            }, 1000);
+            Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
+            
             setInterval(function() {
                 drawLoop();
             }, 500);
-            runFaceDetection();
 
             document.getElementById('stopCaptureVideo').style.display = "inline-block";
             document.getElementById('startCaptureVideo').style.display = "none";
@@ -160,8 +157,8 @@
 
         function captureVideoCb(imageBase64) {
             document.getElementById("videoCall").src = imageBase64;
-            img_set = true;
-            console.log("imageChanged");
+            await runFaceDetection();
+            Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
         }
         // Canvas code
         function getCenterFromWH(width, height) {
@@ -202,13 +199,7 @@
             if (!modelLoaded) {
                 await loadModel();
             }
-            if(img_set){
-                console.log("looping results");
-                detections = await faceapi.detectAllFaces(input, options);
-                console.log(detections);
-            }
-            await sleep(2000);
-            runFaceDetection();
+            detections = await faceapi.detectAllFaces(input, options);
         }
 
         function drawLoop(){
