@@ -155,7 +155,7 @@
             return new Promise(resolve => setTimeout(resolve, milliseconds))
         }
 
-        function captureVideoCb(imageBase64) {
+        async function captureVideoCb(imageBase64) {
             document.getElementById("videoCall").src = imageBase64;
             await runFaceDetection();
             Ohmni.captureVideo(videoCallBackWidth, videoCallBackHeight);
