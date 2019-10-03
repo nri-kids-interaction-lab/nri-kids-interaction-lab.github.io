@@ -192,12 +192,12 @@
             faceapi.matchDimensions(canvas, displaySize);
             console.log("Face detection loaded, looping detection");
             modelLoaded = true;
-            runFaceDetection();
         }
 
         async function runFaceDetection() {
             if (!modelLoaded) {
                 await loadModel();
+                runFaceDetection();
                 return;
             }
             console.log("looping results");
