@@ -32,6 +32,7 @@ The main model code is inside `js/model.js`. It computes the speakers output and
 
 # TO DO
 
+- [] Figure out why the icons are tall and narrow, and then fix it! 
 - [] Find a new green check mark icon.
 - [] Maybe: only show icons when the operator is talking? 
 

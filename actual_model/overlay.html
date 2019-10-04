@@ -213,7 +213,7 @@
                 //var color = "#FF0000"
 
                 // Center the icon above the person's head
-                var iconW = 10;
+                var iconW = 10 / .703; // extra adjustment is because the icon is getting enslendered. I think it's because the canvaS (1026x821) is not as wide as the original image (1920x1080). 
                 var iconH = 10;
                 var iconClearance = 3; // spacing between top of face box and bottom of icon
                 var iconX = ad[0] + (ad[2] / 2) - (iconW / 2);  // ad[0],ad[1] are the (x,y) of the upper-left corner of the face box
