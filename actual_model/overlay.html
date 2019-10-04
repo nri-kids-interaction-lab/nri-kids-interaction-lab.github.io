@@ -107,6 +107,8 @@
             volume_set = false;
             videoCallBackWidth = 1026;
             videoCallBackHeight = 821;
+            canvas.width = videoCallBackWidth;
+            canvas.height = videoCallBackHeight;
             detections = [];
             options = new faceapi.SsdMobilenetv1Options({ minConfidence: 0.3, maxResults: 10 });
 
@@ -187,8 +189,6 @@
             console.log("model loading");
             await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
             console.log("model loaded");
-            canvas = document.getElementById('overlay');
-            input = document.getElementById('videoCall');
             displaySize = { width: canvas.width, height: canvas.height }
             faceapi.matchDimensions(canvas, displaySize);
             console.log("Face detection loaded, looping detection");
