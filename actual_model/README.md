@@ -32,15 +32,10 @@ The main model code is inside `js/model.js`. It computes the speakers output and
 
 # TO DO
 
-- [ ] Matt: try drawing icons
-- [ ] Matt: the distance=f(face) equation will need adjustment once we update the captureVideo(resolution). 
-
-- [ ] Tom: working on getting the face detector to stop blocking other stuff, thereby causing a stutter (lag). Line 175 of facetry.html. NOTE: the new plan (that Matt made with Yulun) is to try to make everything (i.e., the face detector, ambient noise recorder, and vocal volume recorder) operate asynchronously, and then to update the icon at a pretty speedy pace (5-10Hz) with whatever the latest values are (probably in yet another asynchronous function/thread). 
-- [ ] Tom: will resolve the positioning stuff -- he can do this very quickly; don't worry about it.
-
-- [x] Someone: check if 1s is a good smoothing window size for the operator voice. ANSWER: Yulun did this; we are starting with 1.5s. Beware of attenuated peak volumes! Matt knows what that means.
-
-- [x] Figure out the maximum resolution of the camera. Matt has e-mailed Ohmni about this. ANSWER: Tingxi says it's 1920x1080.
+- [] Make sure the distance = f(face_height) is normalized by the image resolution. If not, we'll have to figure out what image size we were using back when Yulun and Matt created the equation f(). 
+- [] Put icons above faces, and stop scaling them.
+- [] Find a new green check mark icon.
+- [] Maybe: only show icons when the operator is talking? 
 
 
 NOTES
@@ -48,3 +43,5 @@ NOTES
 * Regarding the webcam resolution:
 	* Stream display in the web app seems to NOT stretch. It's only slightly wider than tall, maybe W = 1.33H
 	* When we call captureVideo(resWidth, resHeight) it obeys us! So captureVideo(1, 100) compresses the image down to a 1x100 strip, which then gets stretched horizontally when we ask for it to display as a 200x200, so it ends up as a bunch of horizontal stripes.
+* Tingxi says the webcam resolution is 1920x1080. But WATCH OUT: the size of the canvas on which it's being displayed depends on your browser window size, and our captureVideo() images are screen captures of that canvas! At least the canvas is scaled so the ratio doesn't change. 
+* For smoothing the operator's vocal volume we are starting with a window of 1.5s. But beware of attenuated peak volumes! Matt knows what that means.
