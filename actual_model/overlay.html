@@ -214,7 +214,7 @@
 
                 // ************ temporary model logic **************
                 // Should this be getting box height or adjusted?
-                if(applyVoiceModel(detections[i]._box._height)) {
+                if(applyVoiceModel(detections[i]._box._height / videoCallBackHeight)) { // face height as FRACTION of image height
                   //  color = "#008000";
                     ctx.drawImage(img_check, ad[0], ad[1], ad[2], ad[3]);
                 }

@@ -38,6 +38,7 @@ The main model code is inside `js/model.js`. It computes the speakers output and
 - [] Maybe: only show icons when the operator is talking? 
 
 
+
 NOTES
 * The smoothers for operator voice and ambient noise could be made more efficient...probably not a huge deal, though.
 * Regarding the webcam resolution:
