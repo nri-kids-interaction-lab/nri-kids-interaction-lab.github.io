@@ -32,7 +32,6 @@ The main model code is inside `js/model.js`. It computes the speakers output and
 
 # TO DO
 
-- [] Make sure the distance = f(face_height) is normalized by the image resolution. If not, we'll have to figure out what image size we were using back when Yulun and Matt created the equation f(). 
 - [] Put icons above faces, and stop scaling them.
 - [] Find a new green check mark icon.
 - [] Maybe: only show icons when the operator is talking? 
@@ -46,3 +45,4 @@ NOTES
 	* When we call captureVideo(resWidth, resHeight) it obeys us! So captureVideo(1, 100) compresses the image down to a 1x100 strip, which then gets stretched horizontally when we ask for it to display as a 200x200, so it ends up as a bunch of horizontal stripes.
 * Tingxi says the webcam resolution is 1920x1080. But WATCH OUT: the size of the canvas on which it's being displayed depends on your browser window size, and our captureVideo() images are screen captures of that canvas! At least the canvas is scaled so the ratio doesn't change. 
 * For smoothing the operator's vocal volume we are starting with a window of 1.5s. But beware of attenuated peak volumes! Matt knows what that means.
+* The equation for distance based on face height assumes (as of 10/4) that all faces are actually 17cm tall. The face detector measures your face height from the very bottom of your chin to about your hairline. This is actually ~20cm for Matt and ~19.5cm for Yang, but the equation fits best (especially at longer distances) when using 19cm for Matt and ~17.5cm for Yang and Yulun. I've chosen 17cm to favor smaller faces since this will be deployed in a high school. ~Matt
