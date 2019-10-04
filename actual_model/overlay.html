@@ -213,11 +213,11 @@
                 //var color = "#FF0000"
 
                 // Center the icon above the person's head
-                var iconW = 5;
-                var iconH = 5;
+                var iconW = 10;
+                var iconH = 10;
                 var iconClearance = 3; // spacing between top of face box and bottom of icon
                 var iconX = ad[0] + (ad[2] / 2) - (iconW / 2);  // ad[0],ad[1] are the (x,y) of the upper-left corner of the face box
-                var iconY = ad[1] + iconH + iconClearance;  // ad[2] is face box width, ad[3] (unused here) is the height
+                var iconY = ad[1] - iconH - iconClearance;  // ad[2] is face box width, ad[3] (unused here) is the height
                 if(applyVoiceModel(detections[i]._box._height / videoCallBackHeight)) { // face height as FRACTION of image height
                   //  color = "#008000";
                     // ctx.drawImage(img_check, ad[0], ad[1], ad[2], ad[3]);
