@@ -69,7 +69,7 @@
 
     <!--Used for volume meter-->
     <div style="text-align: center;">
-        <img src="https://api.ohmnilabs.com/ohmni-api/test-incall.html" width="100%" height="100%" hidden id="videoCall"
+        <img src="" width="100%" height="100%" hidden id="videoCall"
             style="display: none;"> <br>
 
         <!--Used for volume meter-->
@@ -107,8 +107,8 @@
             volume_set = false;
             videoCallBackWidth = 1026;
             videoCallBackHeight = 821;
-            canvas.width = videoCallBackWidth;
-            canvas.height = videoCallBackHeight;
+            canvas.width = videoCallBackWidth;    // These 2 lines IMPORTANT or else the canvas size gets set to 300x150
+            canvas.height = videoCallBackHeight;  // 
             detections = [];
             options = new faceapi.SsdMobilenetv1Options({ minConfidence: 0.3, maxResults: 10 });
 
@@ -219,13 +219,6 @@
                 var iconClearance = 3; // spacing between top of face box and bottom of icon
                 var iconX = ad[0] + (ad[2] / 2) - (iconW / 2);  // ad[0],ad[1] are the (x,y) of the upper-left corner of the face box
                 var iconY = ad[1] - iconH - iconClearance;  // ad[2] is face box width, ad[3] (unused here) is the height
-
-                // JUST FOR TESTING WHERE THE CORNERS OF OUR CANVAS BE!
-                ctx.drawImage(img_check, 0, 0, 14, 10);  // top-left corner
-                ctx.drawImage(img_check, 1026-14, 821-10, 14, 10);  // bottom-right corner
-                console.log("canvas.width / captureVideo width" + (canvas.width / videoCallBackWidth));
-                console.log("canvas.height / captureVideo height" + (canvas.height / videoCallBackHeight));
-                // END TEST! Carry on. 
 
                 if(applyVoiceModel(detections[i]._box._height / videoCallBackHeight)) { // face height as FRACTION of image height
                   //  color = "#008000";

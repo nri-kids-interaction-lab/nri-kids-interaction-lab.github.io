@@ -32,8 +32,8 @@ The main model code is inside `js/model.js`. It computes the speakers output and
 
 # TO DO
 
-- [] Figure out why the canvas we're drawing on gets sized to 300x150 somewhere, and fix it. 
-- [] Figure out why the icons are tall and narrow, and then fix it! 
+- [] Get rid of the little div at the bottom of our overlay that makes it possible to scroll.
+- [] Adjust icon size and dimensions. 
 - [] Find a new green check mark icon.
 - [] Maybe: only show icons when the operator is talking? 
 
