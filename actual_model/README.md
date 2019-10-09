@@ -36,6 +36,7 @@ The main model code is inside `js/model.js`. It computes the speakers output and
 - [] Adjust icon size and dimensions. 
 - [] Find a new green check mark icon.
 - [] Maybe: only show icons when the operator is talking? 
+- [] Test that the volume appropriateness cutoffs are about right.
 
 
 
