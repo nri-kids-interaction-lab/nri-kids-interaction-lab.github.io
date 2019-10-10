@@ -33,6 +33,7 @@ The main model code is inside `js/model.js`. It computes the speakers output and
 # TO DO
 
 - [] Maybe: only show icons when the operator is talking? 
+- [] Maybe: raise the bar of the volume appropriateness model a bit? Might want to test with louder ambient noise (perhaps the simulated classroom sounds) first. 
 
 
 NOTES
