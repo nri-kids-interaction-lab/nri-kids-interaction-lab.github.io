@@ -32,10 +32,7 @@ The main model code is inside `js/model.js`. It computes the speakers output and
 
 # TO DO
 
-- [] Adjust icon size and dimensions. 
 - [] Maybe: only show icons when the operator is talking? 
-- [] Test that the volume appropriateness cutoffs are about right.
-
 
 
 NOTES
@@ -46,3 +43,4 @@ NOTES
 * Tingxi says the webcam resolution is 1920x1080. But WATCH OUT: the size of the canvas on which it's being displayed depends on your browser window size, and our captureVideo() images are screen captures of that canvas! At least the canvas is scaled so the ratio doesn't change. 
 * For smoothing the operator's vocal volume we are starting with a window of 1.5s. But beware of attenuated peak volumes! Matt knows what that means.
 * The equation for distance based on face height assumes (as of 10/4) that all faces are actually 17cm tall. The face detector measures your face height from the very bottom of your chin to about your hairline. This is actually ~20cm for Matt and ~19.5cm for Yang, but the equation fits best (especially at longer distances) when using 19cm for Matt and ~17.5cm for Yang and Yulun. I've chosen 17cm to favor smaller faces since this will be deployed in a high school. ~Matt
+* On 10/9 it was found that the volume appropriateness model works pretty well. This was in the lab with the A/C going right next to Matt's desk, which is moderately loud. Might want to test in a quieter setting, too. Anyway, the model gave the green check mark very liberally -- even when I (Matt) could just hardly hear one or two words from my distance. Might want to raise that bar a bit. 
