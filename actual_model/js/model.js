@@ -24,10 +24,11 @@ function getBotVolumeCb(value) {
 }
 
 function takeMedianOperator(array_) {
-    array_.sort(function(a, b){return a-b});
     if (array_.length == 0) {
         return 0;
     }
+
+    array_.sort(function(a, b){return a.volume - b.volume});
 
     const mid1 = array_[Math.floor((array_.length) / 2) - 1];
     const mid2 = array_[Math.floor((array_.length) / 2)];
@@ -41,10 +42,12 @@ function takeMedianOperator(array_) {
 }
 
 function takeMedianAmbient(array_) {
-    array_.sort(function(a, b){return a-b});
     if (array_.length == 0) {
         return 0;
     }
+
+    array_.sort(function(a, b){return a.noiseLevel - b.noiseLevel});
+
 
     const mid1 = array_[Math.floor((array_.length) / 2) - 1];
     const mid2 = array_[Math.floor((array_.length) / 2)];

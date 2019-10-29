@@ -23,7 +23,7 @@ function setUpWebSocket() {
         // console.log("Noise level received: " + JSON.stringify(message));
 
         // if it the message is the establishment message, process it
-        console.log(message)
+        // console.log(message)
         /*
         format of message from Android:
         {
@@ -35,7 +35,7 @@ function setUpWebSocket() {
        // make sure message is not the establishment message and value is not zero (ambient recorder returns zero when operator is speaking)
         if (message.message != "Connection to overlay established" && message.noiseLevel != 0) {
             ambientNoiseLevels.push(message);
-            console.log(message);
+            // console.log(message);
             // remove all messages that are 1 second eslier than the current one, delete it
             while (ambientNoiseLevels[ambientNoiseLevels.length - 1].time - ambientNoiseLevels[0].time > smoothConstAmbient) {
                 ambientNoiseLevels.shift();
