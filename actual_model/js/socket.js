@@ -33,7 +33,7 @@ function setUpWebSocket() {
 
         */
        // make sure message is not the establishment message and value is not zero (ambient recorder returns zero when operator is speaking)
-        if (message.message != "Connection to overlay established" && message.message.noiseLevel != 0) {
+        if (message.message != "Connection to overlay established" && message.noiseLevel != 0) {
             ambientNoiseLevels.push(message);
             console.log(message);
             // remove all messages that are 1 second eslier than the current one, delete it
