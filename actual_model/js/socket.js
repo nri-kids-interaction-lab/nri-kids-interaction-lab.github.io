@@ -23,7 +23,8 @@ function setUpWebSocket() {
         // console.log("Noise level received: " + JSON.stringify(message));
 
         // if it the message is the establishment message, process it
-        console.log(message)
+        // console.log("[debug] message from android: ");
+        // console.log(message);
         /*
         format of message from Android:
         {
