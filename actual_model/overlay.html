@@ -58,9 +58,9 @@
             <button type="button" id="startCaptureVideo" data-external="true" class="button"
                 style="padding:30px;margin:20px; margin-top: 60px"
                 onclick="captureVideo();">startCaptureVideo</button><br>
-            <button type="button" id="stopCaptureVideo" data-external="true" class="button"
+            <!--<button type="button" id="stopCaptureVideo" data-external="true" class="button"
                 style="padding:30px;margin:20px; margin-top: 60px; display: none;"
-                onclick="stopCaptureVideo();">stopCaptureVideo</button><br>
+                onclick="stopCaptureVideo();">stopCaptureVideo</button><br> -->
             <img src="" id="videoCall" style="display: none;"> <br>
             <!-- audio sensing button -->
             <!-- <button onclick="loadAudioContext()" data-external="true">Start Audio Sensing</button> -->
@@ -145,14 +145,14 @@
                 drawLoop();
             }, 500);
 
-            document.getElementById('stopCaptureVideo').style.display = "inline-block";
+            // document.getElementById('stopCaptureVideo').style.display = "inline-block";
             document.getElementById('startCaptureVideo').style.display = "none";
         }
 
-        function stopCaptureVideo() {
-            document.getElementById('startCaptureVideo').style.display = "inline-block";
-            document.getElementById('stopCaptureVideo').style.display = "none";
-        }
+//        function stopCaptureVideo() {
+//            document.getElementById('startCaptureVideo').style.display = "inline-block";
+//            document.getElementById('stopCaptureVideo').style.display = "none";
+//        }
         const sleep = (milliseconds) => {
             return new Promise(resolve => setTimeout(resolve, milliseconds))
         }
