@@ -65,6 +65,9 @@
             <!-- audio sensing button -->
             <!-- <button onclick="loadAudioContext()" data-external="true">Start Audio Sensing</button> -->
         </div>
+        <div class="btn-group">
+            <button onclick="wiggle()" data-external="true" class="green_button">Wiggle</button>
+        </div>
     </div>
 
     <!--Used for volume meter-->
@@ -155,6 +158,22 @@
 //        }
         const sleep = (milliseconds) => {
             return new Promise(resolve => setTimeout(resolve, milliseconds))
+        }
+
+        async function wiggle(){
+            Ohmni.move(-1000,-1000,300);
+            var sleep_a = 400;
+            await sleep(sleep_a);
+            Ohmni.move(1000,1000,300);
+            await sleep(sleep_a);
+            Ohmni.move(-1000,-1000,300);
+            await sleep(sleep_a);
+            Ohmni.move(1000,1000,300);
+            await sleep(sleep_a);
+            Ohmni.move(-1000,-1000,300);
+            await sleep(sleep_a);
+            Ohmni.move(1000,1000,300);
+            await sleep(sleep_a);
         }
 
         async function captureVideoCb(imageBase64) {
