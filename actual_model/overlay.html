@@ -57,28 +57,28 @@
         <div class="buttons">
             <button type="button" id="startCaptureVideo" data-external="true" class="button"
                 style="padding:30px;margin:20px; margin-top: 60px"
-                onclick="captureVideo();">startCaptureVideo</button><br>
+                onclick="captureVideo();">startCaptureVideo</button>
             <!--<button type="button" id="stopCaptureVideo" data-external="true" class="button"
                 style="padding:30px;margin:20px; margin-top: 60px; display: none;"
                 onclick="stopCaptureVideo();">stopCaptureVideo</button><br> -->
-            <img src="" id="videoCall" style="display: none;"> <br>
+            <img src="" id="videoCall" style="display: none;">
             <!-- audio sensing button -->
             <!-- <button onclick="loadAudioContext()" data-external="true">Start Audio Sensing</button> -->
             <button type="button" id="drawing1Button" data-external="true" class="button"
                 style="padding:30px;margin:20px; margin-top: 60px"
-                onclick="switchToDrawing1();">Switch to Drawing 1</button><br>
+                onclick="switchToDrawing1();">Switch to Drawing 1</button>
             <button type="button" id="drawing2Button" data-external="true" class="button"
                 style="padding:30px;margin:20px; margin-top: 60px"
-                onclick="switchToDrawing2();">Switch to Drawing 2</button><br>
+                onclick="switchToDrawing2();">Switch to Drawing 2</button>
             <button type="button" id="blackScreenButton" data-external="true" class="button"
                 style="padding:30px;margin:20px; margin-top: 60px"
-                onclick="switchToBlackScreen();">Switch to Black Screen</button><br>
+                onclick="switchToBlackScreen();">Switch to Black Screen</button>
             <button type="button" id="flashScreenButton" data-external="true" class="button"
                 style="padding:30px;margin:20px; margin-top: 60px"
-                onclick="flashScreen();">Flash White and Black</button><br>
+                onclick="flashScreen();">Flash White and Black</button>
             <button type="button" id="wiggleButton" data-external="true" class="button"
                 style="padding:30px;margin:20px; margin-top: 60px"
-                onclick="wiggle();">Wiggle the Robot!</button><br>
+                onclick="wiggle();">Wiggle the Robot!</button>
         </div>
     </div>
 
@@ -201,18 +201,19 @@
         }
 
         async function flashScreen(){
+            var sleep_flash = 1000;
             Ohmni.showPageOnBot("https://nri-kids-interaction-lab.github.io/actual_model/images/white.jpg");
-            await sleep(300);
+            await sleep(sleep_flash);
             Ohmni.hidePageOnBot();
-            await sleep(300);
+            await sleep(sleep_flash);
             Ohmni.showPageOnBot("https://nri-kids-interaction-lab.github.io/actual_model/images/white.jpg");
-            await sleep(300);
+            await sleep(sleep_flash);
             Ohmni.hidePageOnBot();
-            await sleep(300);
+            await sleep(sleep_flash);
             Ohmni.showPageOnBot("https://nri-kids-interaction-lab.github.io/actual_model/images/white.jpg");
-            await sleep(300);
+            await sleep(sleep_flash);
             Ohmni.hidePageOnBot();
-            await sleep(300);
+            await sleep(sleep_flash);
         }
 
         async function captureVideoCb(imageBase64) {
