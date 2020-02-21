@@ -203,7 +203,7 @@
             Ohmni.showPageOnBot(currentPictureURL);
 
             // update robot screen previewer so it shows the image
-            document.getElementById('robotScreenPreview').url=currentPictureURL;  
+            document.getElementById('robotScreenPreview').src=currentPictureURL;  
         }
 
         function hideCurrentPicture(){
@@ -211,7 +211,7 @@
             Ohmni.hidePageOnBot();
 
             // update robot screen previewer so it just shows a black image
-            document.getElementById('robotScreenPreview').url="https://nri-kids-interaction-lab.github.io/actual_model/images/black.jpg";
+            document.getElementById('robotScreenPreview').src="https://nri-kids-interaction-lab.github.io/actual_model/images/black.jpg";
         }
 
         // Does whatever you did last -- displayed it or hid it.
@@ -232,27 +232,27 @@
             var sleep_flash = 800;
 
             Ohmni.showPageOnBot("https://nri-kids-interaction-lab.github.io/actual_model/images/white.jpg");
-            document.getElementById('robotScreenPreview').url="https://nri-kids-interaction-lab.github.io/actual_model/images/white.jpg";
+            document.getElementById('robotScreenPreview').src="https://nri-kids-interaction-lab.github.io/actual_model/images/white.jpg";
             await sleep(sleep_flash);
 
             Ohmni.hidePageOnBot();
-            document.getElementById('robotScreenPreview').url="https://nri-kids-interaction-lab.github.io/actual_model/images/black.jpg";
+            document.getElementById('robotScreenPreview').src="https://nri-kids-interaction-lab.github.io/actual_model/images/black.jpg";
             await sleep(sleep_flash);
 
             Ohmni.showPageOnBot("https://nri-kids-interaction-lab.github.io/actual_model/images/white.jpg");
-            document.getElementById('robotScreenPreview').url="https://nri-kids-interaction-lab.github.io/actual_model/images/white.jpg";
+            document.getElementById('robotScreenPreview').src="https://nri-kids-interaction-lab.github.io/actual_model/images/white.jpg";
             await sleep(sleep_flash);
 
             Ohmni.hidePageOnBot();
-            document.getElementById('robotScreenPreview').url="https://nri-kids-interaction-lab.github.io/actual_model/images/black.jpg";
+            document.getElementById('robotScreenPreview').src="https://nri-kids-interaction-lab.github.io/actual_model/images/black.jpg";
             await sleep(sleep_flash);
 
             Ohmni.showPageOnBot("https://nri-kids-interaction-lab.github.io/actual_model/images/white.jpg");
-            document.getElementById('robotScreenPreview').url="https://nri-kids-interaction-lab.github.io/actual_model/images/white.jpg";
+            document.getElementById('robotScreenPreview').src="https://nri-kids-interaction-lab.github.io/actual_model/images/white.jpg";
             await sleep(sleep_flash);
 
             Ohmni.hidePageOnBot();
-            document.getElementById('robotScreenPreview').url="https://nri-kids-interaction-lab.github.io/actual_model/images/black.jpg";
+            document.getElementById('robotScreenPreview').src="https://nri-kids-interaction-lab.github.io/actual_model/images/black.jpg";
             await sleep(sleep_flash);
 
             displayOrHideCurrentPicture();
