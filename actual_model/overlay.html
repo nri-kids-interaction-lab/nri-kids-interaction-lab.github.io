@@ -72,10 +72,10 @@
                 onclick="switchToDrawing2();">Switch to Drawing 2</button><br>
             <button type="button" id="blackScreenButton" data-external="true" class="button"
                 style="padding:20px;margin:20px"
-                onclick="switchToBlackScreen();">Switch to Black Screen</button><br>
+                onclick="hideCurrentPicture();">Back to Webcam (or Black Screen)</button><br>
             <button type="button" id="flashScreenButton" data-external="true" class="button"
                 style="padding:20px;margin:20px"
-                onclick="flashScreen();">Flash White and Black</button><br>
+                onclick="flashScreen();">Flash White Screen 3x</button><br>
             <button type="button" id="wiggleButton" data-external="true" class="button"
                 style="padding:20px;margin:20px"
                 onclick="wiggle();">Wiggle the Robot!</button><br>
@@ -188,20 +188,36 @@
             await sleep(sleep_a);
         }
 
+        function setCurrentPictureURL(url){
+            currentPictureURL = url;
+        }
+
+        function displayCurrentPicture(){
+            displayOrHideCurrentPicture = displayCurrentPicture;
+            Ohmni.showPageOnBot(currentPictureURL);
+        }
+
+        function hideCurrentPicture(){
+            displayOrHideCurrentPicture = hideCurrentPicture;
+            Ohmni.hidePageOnBot();
+        }
+
+        // Does whatever you did last -- displayed it or hid it.
+        // Here we set it to initially point to the "hide" function.
+        displayOrHideCurrentPicture = hideCurrentPicture;
+
         function switchToDrawing1(){
-            Ohmni.showPageOnBot("https://nri-kids-interaction-lab.github.io/actual_model/images/Drawing1.jpg");
+            setCurrentPictureURL("https://nri-kids-interaction-lab.github.io/actual_model/images/Drawing1.jpg");
+            displayCurrentPicture();
         }
 
         function switchToDrawing2(){
-            Ohmni.showPageOnBot("https://nri-kids-interaction-lab.github.io/actual_model/images/Drawing2.jpg");
-        }
-
-        function switchToBlackScreen(){
-            Ohmni.hidePageOnBot();
+            setCurrentPictureURL("https://nri-kids-interaction-lab.github.io/actual_model/images/Drawing2.jpg");
+            displayCurrentPicture();
         }
 
         async function flashScreen(){
-            var sleep_flash = 1000;
+            var sleep_flash = 800;
             Ohmni.showPageOnBot("https://nri-kids-interaction-lab.github.io/actual_model/images/white.jpg");
             await sleep(sleep_flash);
             Ohmni.hidePageOnBot();
@@ -214,6 +230,7 @@
             await sleep(sleep_flash);
             Ohmni.hidePageOnBot();
             await sleep(sleep_flash);
+            displayOrHideCurrentPicture();
         }
 
         async function captureVideoCb(imageBase64) {
