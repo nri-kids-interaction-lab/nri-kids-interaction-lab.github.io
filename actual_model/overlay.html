@@ -55,10 +55,6 @@
     <div class="container">
         <canvas class="canvas" id="overlay"></canvas>
         <div class="buttons">
-            <img id="robotScreenPreview"
-                src="https://nri-kids-interaction-lab.github.io/actual_model/images/black.jpg" 
-                alt="Preview of Robot Screen"   
-                style="width:200px;height:125px;float:right;border-style: solid;border-color:white;border-width:2px;margin:20px">
             <button type="button" id="startCaptureVideo"        
                 data-external="true" class="button"
                 style="padding:20px;margin:20px"
@@ -86,7 +82,12 @@
                 style="padding:20px;margin:20px"
                 onclick="wiggle();">Wiggle the Robot!</button><br>
         </div>
-
+        <div style="z-index: 10; float: right">
+            <img id="robotScreenPreview"
+                src="https://nri-kids-interaction-lab.github.io/actual_model/images/black.jpg" 
+                alt="Preview of Robot Screen"   
+                style="width:200px;height:125px;border-style: solid;border-color:white;border-width:2px;margin:20px">                   
+        </div>
     </div>
 
     <!--Used for volume meter-->
